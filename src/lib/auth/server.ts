@@ -9,7 +9,6 @@ import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { nextCookies } from "better-auth/next-js";
 import { customSession } from "better-auth/plugins";
 import { passkey } from "@better-auth/passkey";
-import { username } from "better-auth/plugins";
 import { db } from "@/db";
 import { user, session, account, verification, passkey as passkeyTable } from "@/db/schema/auth";
 import { eq } from "drizzle-orm";
@@ -74,16 +73,8 @@ export const auth = betterAuth({
     },
   },
 
-  // 🚀 PLUGINS (Order: Username → SIWS → Passkey → Custom → Cookies LAST)
+  // 🚀 PLUGINS (Order: SIWS → Passkey → Custom → Cookies LAST)
   plugins: [
-    // 🏷️ Username with validation
-    username({
-      minUsernameLength: 4,
-      maxUsernameLength: 15,
-      usernameValidator: (value) => !restrictedUsernames.includes(value),
-      usernameNormalization: (value) => value.toLowerCase(),
-    }),
-
     // 🔑 Solana SIWS (Nonce + Verify)
     siwsPlugin({
       domain: "localhost:3001",
