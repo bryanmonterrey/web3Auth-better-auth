@@ -38,7 +38,7 @@ export default function ExportKeyModal({ isOpen, onClose }: ExportKeyModalProps)
                         // Passkey verification successful, now export the key
                         handleExportKey();
                     },
-                    onError: (ctx) => {
+                    onError: (ctx: any) => {
                         throw new Error(ctx.error.message || "Passkey verification failed");
                     },
                 },
