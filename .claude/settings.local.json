@@ -9,7 +9,8 @@
       "Bash(gh auth status)",
       "Bash(gh repo create:*)",
       "Bash(git commit:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(find:*)"
     ],
     "deny": [],
     "ask": []
