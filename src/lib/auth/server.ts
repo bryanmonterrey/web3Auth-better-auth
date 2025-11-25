@@ -21,6 +21,7 @@ const config = {
   trustedOrigins: [
     process.env.NEXT_PUBLIC_BASE_URL ?? "http://localhost:3001",
     "http://localhost:3000",
+    "https://anthrax.dev",
   ],
   session: {
     expiresIn: 60 * 60 * 24 * 7,          // 7d
