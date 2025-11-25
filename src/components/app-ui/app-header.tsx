@@ -3,15 +3,17 @@ import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { Menu, X } from 'lucide-react'
+import { Menu, X, LayoutDashboard } from 'lucide-react'
 import { ThemeSelect } from '@/components/theme/theme-select'
 import { ClusterUiSelect } from '../cluster/cluster-ui'
 import WalletButton from '@/components/wallet/wallet-button'
 import Image from 'next/image'
+import { authClient } from '@/lib/auth/client'
 
 export function AppHeader({ links = [] }: { links?: { label: string; path: string }[] }) {
   const pathname = usePathname()
   const [showMenu, setShowMenu] = useState(false)
+  const { data: session } = authClient.useSession()
 
   function isActive(path: string) {
     return path === '/' ? pathname === '/' : pathname.startsWith(path)
@@ -45,6 +47,14 @@ export function AppHeader({ links = [] }: { links?: { label: string; path: strin
         </Button>
 
         <div className="hidden md:flex items-center gap-4">
+          {session?.user?.username && (
+            <Button variant="ghost" size="sm" asChild>
+              <Link href={`/dashboard/${session.user.username}/settings`}>
+                <LayoutDashboard className="w-4 h-4 mr-2" />
+                Dashboard
+              </Link>
+            </Button>
+          )}
           <WalletButton />
           <ClusterUiSelect />
           <ThemeSelect />
@@ -67,6 +77,14 @@ export function AppHeader({ links = [] }: { links?: { label: string; path: strin
                 ))}
               </ul>
               <div className="flex flex-col gap-4">
+                {session?.user?.username && (
+                  <Button variant="ghost" className="justify-start" asChild>
+                    <Link href={`/dashboard/${session.user.username}/settings`} onClick={() => setShowMenu(false)}>
+                      <LayoutDashboard className="w-4 h-4 mr-2" />
+                      Dashboard
+                    </Link>
+                  </Button>
+                )}
                 <WalletButton />
                 <ClusterUiSelect />
                 <ThemeSelect />
