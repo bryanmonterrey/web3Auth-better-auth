@@ -54,6 +54,12 @@ export const auth = betterAuth({
     schema: { user, session, account, verification, passkey: passkeyTable },
   }),
 
+  // 🔒 Advanced Configuration (Next.js 16 compatibility)
+  advanced: {
+    disableCSRFCheck: false,
+    useSecureCookies: process.env.NODE_ENV === "production",
+  },
+
   // 🔐 Social Providers (Google, Twitter, Discord)
   socialProviders: {
     google: {
