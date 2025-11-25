@@ -1,0 +1,41 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1763799963662,
+      "tag": "0000_noisy_captain_flint",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1763805957754,
+      "tag": "0001_clean_the_santerians",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1763806275882,
+      "tag": "0002_fancy_vision",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1763954080386,
+      "tag": "0003_omniscient_proteus",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1763954796238,
+      "tag": "0004_deep_hemingway",
+      "breakpoints": true
+    }
+  ]
+}
