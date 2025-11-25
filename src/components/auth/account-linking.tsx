@@ -68,7 +68,7 @@ export default function AccountLinking() {
 
             // Fetch user's linked accounts from Better Auth
             // Note: Better Auth stores linked accounts in the 'account' table
-            const response = await fetch("/api/auth/accounts");
+            const response = await fetch("/api/accounts");
             if (!response.ok) {
                 throw new Error("Failed to load linked accounts");
             }
