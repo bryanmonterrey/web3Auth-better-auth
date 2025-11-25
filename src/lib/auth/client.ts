@@ -18,6 +18,9 @@ export const authClient = createAuthClient({
     refetchOnWindowFocus: false,
     refetchOnMount: false,
     staleTime: 5 * 60 * 1000, // 5 minutes
+    headers: {
+      "Content-Type": "application/json",
+    },
   },
 });
 
