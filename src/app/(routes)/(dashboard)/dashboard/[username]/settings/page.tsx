@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { authClient } from "@/lib/auth/client";
 import { Shield, Key, Wallet, ChevronRight, Eye, Download, Trash2, Link as LinkIcon, Monitor } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -13,10 +13,44 @@ import SecurityAuditLog from "@/components/auth/security-audit-log";
 import { AnimatedTabs } from "@/components/ui/animated-tabs";
 
 export default function SettingsPage() {
-    const tabs = ["Wallet", "Security", "Passkeys", "Accounts", "Sessions"];
+    const { data: session } = authClient.useSession();
+    const [linkedAccounts, setLinkedAccounts] = useState<any[]>([]);
+    const [loadingAccounts, setLoadingAccounts] = useState(true);
+
+    // Determine if user is wallet-only (has wallet but no social accounts)
+    const isWalletOnlyUser = session?.user?.wallet_address && linkedAccounts.length === 0 && !loadingAccounts;
+
+    // Wallet-only users see only Sessions tab, others see all tabs
+    const tabs = isWalletOnlyUser ? ["Sessions"] : ["Wallet", "Security", "Passkeys", "Accounts", "Sessions"];
     const [activeTab, setActiveTab] = useState(tabs[0]);
     const [showRevealModal, setShowRevealModal] = useState(false);
     const [showExportModal, setShowExportModal] = useState(false);
+
+    // Load linked accounts to determine user type
+    useEffect(() => {
+        const loadLinkedAccounts = async () => {
+            try {
+                const response = await fetch("/api/accounts");
+                if (response.ok) {
+                    const data = await response.json();
+                    setLinkedAccounts(data.accounts || []);
+                }
+            } catch (error) {
+                console.error("Failed to load accounts:", error);
+            } finally {
+                setLoadingAccounts(false);
+            }
+        };
+
+        loadLinkedAccounts();
+    }, []);
+
+    // Update active tab when user type changes
+    useEffect(() => {
+        if (!tabs.includes(activeTab)) {
+            setActiveTab(tabs[0]);
+        }
+    }, [isWalletOnlyUser, loadingAccounts]);
 
     return (
         <div className="flex flex-col w-full h-full items-center justify-start text-white p-6">

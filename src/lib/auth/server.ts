@@ -7,7 +7,7 @@ import { betterAuth } from "better-auth";
 import { siwsPlugin } from "better-auth-siws";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { nextCookies } from "better-auth/next-js";
-import { customSession } from "better-auth/plugins";
+import { customSession, multiSession } from "better-auth/plugins";
 import { passkey } from "@better-auth/passkey";
 import { db } from "@/db";
 import { user, session, account, verification, passkey as passkeyTable } from "@/db/schema/auth";
@@ -51,6 +51,12 @@ export const auth = betterAuth({
     provider: "pg",
     schema: { user, session, account, verification, passkey: passkeyTable },
   }),
+
+  // 🔒 Advanced Configuration
+  advanced: {
+    useSecureCookies: process.env.NODE_ENV === "production",
+    generateId: () => crypto.randomUUID(),
+  },
 
   // 🔐 Social Providers (Google, Twitter, Discord)
   socialProviders: {
@@ -113,6 +119,11 @@ export const auth = betterAuth({
       },
       config
     ),
+
+    // 🔄 Multi-Session (Allow up to 5 sessions per user)
+    multiSession({
+      maximumSessions: 5,
+    }),
 
     // **LAST** (Auto RSC/Server Actions Cookies)
     nextCookies(),
