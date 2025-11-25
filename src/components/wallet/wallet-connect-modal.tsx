@@ -59,11 +59,12 @@ export function WalletConnectModal({ open, onOpenChange }: WalletConnectModalPro
 
                 console.log("[Passkey Debug] signInData:", signInData);
                 console.log("[Passkey Debug] signInError:", signInError);
+                console.log("[Passkey Debug] Full Error:", JSON.stringify(signInError, null, 2));
 
                 if (signInError) {
                     // Show the actual error instead of generic message
-                    const errorMessage = signInError.message || String(signInError);
-                    console.error("[Passkey Error]", errorMessage);
+                    const errorMessage = signInError.message || signInError.statusText || JSON.stringify(signInError);
+                    console.error("[Passkey Error]", errorMessage, signInError);
                     toast.error(`Passkey error: ${errorMessage}`);
                     return;
                 }
