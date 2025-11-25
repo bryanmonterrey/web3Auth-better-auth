@@ -54,11 +54,6 @@ export const auth = betterAuth({
     schema: { user, session, account, verification, passkey: passkeyTable },
   }),
 
-  trustedOrigins: [
-    process.env.NEXT_PUBLIC_AUTH_URL!,
-    process.env.NEXT_PUBLIC_BASE_URL!,
-  ],
-
   // 🔒 Advanced Configuration
   advanced: {
     // IP tracking temporarily removed to test passkey issue

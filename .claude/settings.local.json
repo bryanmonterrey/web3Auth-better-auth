@@ -4,7 +4,12 @@
       "Bash(cat:*)",
       "Bash(node:*)",
       "Bash(git init:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nInitial commit: Next.js Better Auth with Solana integration\n\n- Better Auth with passkey support\n- Solana wallet integration (SIWS)\n- Multi-session management\n- Custom session with role-based access\n- Drizzle ORM with Supabase PostgreSQL\n- Social auth providers (Google, Twitter, Discord, Twitch)\n- Fixed passkey rpID to support production deployment\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(gh auth status)",
+      "Bash(gh repo create:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)"
     ],
     "deny": [],
     "ask": []

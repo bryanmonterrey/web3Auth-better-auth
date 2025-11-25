@@ -57,17 +57,32 @@ export function WalletConnectModal({ open, onOpenChange }: WalletConnectModalPro
             try {
                 const { data: signInData, error: signInError } = await authClient.signIn.passkey();
 
-                if (signInData && !signInError) {
+                console.log("[Passkey Debug] signInData:", signInData);
+                console.log("[Passkey Debug] signInError:", signInError);
+
+                if (signInError) {
+                    // Show the actual error instead of generic message
+                    const errorMessage = signInError.message || String(signInError);
+                    console.error("[Passkey Error]", errorMessage);
+                    toast.error(`Passkey error: ${errorMessage}`);
+                    return;
+                }
+
+                if (signInData) {
                     onOpenChange(false);
                     router.refresh();
                     toast.success("Signed in with passkey!");
                 } else {
-                    toast.error("No passkey found. Please sign in with Google, Twitter, or Discord first.");
+                    toast.error("Passkey authentication failed. Please try again.");
                 }
             } catch (error) {
                 const message = error instanceof Error ? error.message : String(error);
+                console.error("[Passkey Exception]", error);
+
                 if (message.includes("cancelled") || message.includes("abort")) {
                     toast.error("Passkey sign-in cancelled");
+                } else if (message.includes("NotAllowedError")) {
+                    toast.error("Passkey access denied. Please check your device settings.");
                 } else {
                     toast.error(`Passkey sign-in failed: ${message}`);
                 }
