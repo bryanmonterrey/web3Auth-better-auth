@@ -54,11 +54,6 @@ export const auth = betterAuth({
     schema: { user, session, account, verification, passkey: passkeyTable },
   }),
 
-  // 🔒 Advanced Configuration
-  advanced: {
-    // IP tracking temporarily removed to test passkey issue
-  },
-
   // 🔐 Social Providers (Google, Twitter, Discord)
   socialProviders: {
     google: {
