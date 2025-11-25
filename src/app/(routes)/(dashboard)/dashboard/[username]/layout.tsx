@@ -4,6 +4,7 @@ import React, { useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth/client";
 import { AppHeader } from "@/components/app-ui/app-header";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
     const params = useParams();
@@ -38,8 +39,19 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         return (
             <>
                 <AppHeader />
-                <div className="transition-all hidden-scrollbar flex h-[calc(100vh-52px)] items-center justify-center">
-                    <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
+                <div className="transition-all hidden-scrollbar flex h-[calc(100vh-52px)] items-center justify-start p-6">
+                    <div className="w-full max-w-sm mx-auto space-y-8 flex flex-col items-center">
+                        <div className="space-y-2 text-center">
+                            <Skeleton className="h-9 w-48 mx-auto" />
+                            <Skeleton className="h-5 w-64 mx-auto" />
+                        </div>
+                        <Skeleton className="h-10 w-full max-w-md" />
+                        <div className="w-full space-y-4">
+                            <Skeleton className="h-8 w-48" />
+                            <Skeleton className="h-32 w-full rounded-3xl" />
+                            <Skeleton className="h-32 w-full rounded-3xl" />
+                        </div>
+                    </div>
                 </div>
             </>
         );
@@ -50,8 +62,19 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         return (
             <>
                 <AppHeader />
-                <div className="transition-all hidden-scrollbar flex h-[calc(100vh-52px)] items-center justify-center">
-                    <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
+                <div className="transition-all hidden-scrollbar flex h-[calc(100vh-52px)] items-center justify-start p-6">
+                    <div className="w-full max-w-sm mx-auto space-y-8 flex flex-col items-center">
+                        <div className="space-y-2 text-center">
+                            <Skeleton className="h-9 w-48 mx-auto" />
+                            <Skeleton className="h-5 w-64 mx-auto" />
+                        </div>
+                        <Skeleton className="h-10 w-full max-w-md" />
+                        <div className="w-full space-y-4">
+                            <Skeleton className="h-8 w-48" />
+                            <Skeleton className="h-32 w-full rounded-3xl" />
+                            <Skeleton className="h-32 w-full rounded-3xl" />
+                        </div>
+                    </div>
                 </div>
             </>
         );
