@@ -13,7 +13,6 @@ import { db } from "@/db";
 import { user, session, account, verification, passkey as passkeyTable } from "@/db/schema/auth";
 import { eq } from "drizzle-orm";
 import { APIError } from "better-call";
-import { restrictedUsernames } from "./usernames";
 
 // 🛠️ CONFIG (Type-Safe | Infer for customSession)
 const config = {
@@ -77,7 +76,7 @@ export const auth = betterAuth({
   plugins: [
     // 🔑 Solana SIWS (Nonce + Verify)
     siwsPlugin({
-      domain: "localhost:3001",
+      domain: process.env.NEXT_PUBLIC_AUTH_DOMAIN ?? "localhost",
       statement: "Sign in with Solana to the app.",
       nonceTtlSeconds: 300,  // 5min
     }),
