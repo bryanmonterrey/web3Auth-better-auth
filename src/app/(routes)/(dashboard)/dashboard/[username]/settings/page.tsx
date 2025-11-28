@@ -59,7 +59,7 @@ export default function SettingsPage() {
 
                 {/* Animated Tabs */}
                 {loadingAccounts ? (
-                    <Skeleton className="h-10 w-full max-w-md" />
+                    <Skeleton className="h-10 w-full max-w-md rounded-full" />
                 ) : (
                     <div className="flex justify-center">
                         <AnimatedTabs tabs={tabs} activeTab={activeTab} onTabChange={setActiveTab} />

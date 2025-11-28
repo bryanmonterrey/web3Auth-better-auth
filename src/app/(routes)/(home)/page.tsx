@@ -36,16 +36,16 @@ export default async function Home() {
                 Powered by
               </p>
               <div className="flex flex-wrap justify-center gap-3 text-sm md:text-base">
-                <span className="px-4 py-2 bg-purple-500/10 border border-purple-500/20 rounded-full text-purple-400">
+                <span className="px-4 py-2 bg-purple-500/10 rounded-full text-purple-400">
                   Better Auth
                 </span>
-                <span className="px-4 py-2 bg-blue-500/10 border border-blue-500/20 rounded-full text-blue-400">
+                <span className="px-4 py-2 bg-blue-500/10 rounded-full text-blue-400">
                   Drizzle ORM
                 </span>
-                <span className="px-4 py-2 bg-green-500/10 border border-green-500/20 rounded-full text-green-400">
+                <span className="px-4 py-2 bg-green-500/10 rounded-full text-green-400">
                   Supabase
                 </span>
-                <span className="px-4 py-2 bg-pink-500/10 border border-pink-500/20 rounded-full text-pink-400">
+                <span className="px-4 py-2 bg-pink-500/10 rounded-full text-pink-400">
                   Solana
                 </span>
               </div>
