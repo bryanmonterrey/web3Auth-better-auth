@@ -14,15 +14,15 @@ export function AppLayout({
     links?: { label: string; path: string }[]
 }) {
     return (
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>      
-                <main className="flex flex-col h-screen overflow-y-auto">
-                    <ClusterChecker>
-                        {children}
-                    </ClusterChecker>
-                    <Suspense>
-                        <OnboardingDialog />
-                    </Suspense>
-                </main>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+            <main className="flex flex-col h-screen overflow-y-auto hidden-scrollbar">
+                <ClusterChecker>
+                    {children}
+                </ClusterChecker>
+                <Suspense>
+                    <OnboardingDialog />
+                </Suspense>
+            </main>
         </ThemeProvider>
     )
 }

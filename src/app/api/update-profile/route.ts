@@ -71,7 +71,7 @@ export async function POST(req: NextRequest) {
 
                 const fileExt = avatarFile.name.split(".").pop();
                 const fileName = `${userId}-${Date.now()}.${fileExt}`;
-                const filePath = `avatars/${fileName}`;
+                const filePath = fileName;
 
                 // Convert File to ArrayBuffer
                 const arrayBuffer = await avatarFile.arrayBuffer();
@@ -94,7 +94,7 @@ export async function POST(req: NextRequest) {
                     .from("avatars")
                     .getPublicUrl(filePath);
 
-                updateData.image = publicUrl;
+                updateData.avatar_url = publicUrl;
             } catch (error) {
                 console.error("Avatar processing error:", error);
                 return NextResponse.json(
@@ -124,7 +124,7 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({
             success: true,
             username: updateData.username || session.user.username,
-            image: updateData.image || session.user.image,
+            avatar_url: updateData.avatar_url || session.user.avatar_url,
         });
     } catch (error) {
         console.error("❌ Failed to update profile:", error);

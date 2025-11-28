@@ -126,6 +126,7 @@
     from {
       height: 0;
     }
+
     to {
       height: var(--radix-accordion-content-height);
     }
@@ -135,6 +136,7 @@
     from {
       height: var(--radix-accordion-content-height);
     }
+
     to {
       height: 0;
     }
@@ -145,6 +147,7 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
@@ -158,14 +161,15 @@ body,
   color: #ffffff;
 }
 
-.hidden-scrollbar {
-  scrollbar-width: none !important;
-  -ms-overflow-style: none !important;
-}
+@layer utilities {
+  .hidden-scrollbar {
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+  }
 
-.hidden-scrollbar::-webkit-scrollbar {
-  display: none !important;
-  width: 0 !important;
-  height: 0 !important;
+  .hidden-scrollbar::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+  }
 }
-

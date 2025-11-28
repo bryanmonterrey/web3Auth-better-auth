@@ -4,11 +4,17 @@ import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { Menu, X, Home } from 'lucide-react'
+import { Menu, Home } from 'lucide-react'
 import { ThemeSelect } from '@/components/theme/theme-select'
 import { ClusterUiSelect } from '../cluster/cluster-ui'
 import WalletButton from '@/components/wallet/wallet-button'
 import Image from 'next/image'
+import {
+  Drawer,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+} from '@/components/ui/drawer'
 
 export function DashboardHeader() {
   const pathname = usePathname()
@@ -23,9 +29,6 @@ export function DashboardHeader() {
           </Link>
         </div>
 
-        <Button variant="outline" size="icon" className="md:hidden" onClick={() => setShowMenu(!showMenu)}>
-          {showMenu ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-        </Button>
 
         <div className="hidden md:flex items-center gap-4">
           <Button variant="outline" asChild>
@@ -38,13 +41,19 @@ export function DashboardHeader() {
           <ThemeSelect />
         </div>
 
-        {showMenu && (
-          <div className="md:hidden fixed inset-x-0 top-[52px] bottom-0 bg-neutral-100/95 dark:bg-neutral-900/95 backdrop-blur-sm">
-            <div className="flex flex-col p-4 gap-4 border-t dark:border-neutral-800">
-              <Button variant="ghost" className="justify-start" asChild>
+        <Drawer open={showMenu} onOpenChange={setShowMenu} direction="bottom">
+          <Button variant="outline" size="icon" className="md:hidden" onClick={() => setShowMenu(!showMenu)}>
+            <Menu className="h-6 w-6" />
+          </Button>
+
+          <DrawerContent>
+            <DrawerHeader>
+              <DrawerTitle></DrawerTitle>
+            </DrawerHeader>
+            <div className="flex flex-col p-4 gap-4">
+              <Button variant="outline" className="justify-center" asChild>
                 <Link href="/" onClick={() => setShowMenu(false)}>
-                  <Home className="w-4 h-4 mr-2" />
-                  Home
+                  Exit dashboard
                 </Link>
               </Button>
               <div className="flex flex-col gap-4">
@@ -53,8 +62,8 @@ export function DashboardHeader() {
                 <ThemeSelect />
               </div>
             </div>
-          </div>
-        )}
+          </DrawerContent>
+        </Drawer>
       </div>
     </header>
   )

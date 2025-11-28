@@ -3,12 +3,18 @@ import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { Menu, X, LayoutDashboard } from 'lucide-react'
+import { Menu, LayoutDashboard } from 'lucide-react'
 import { ThemeSelect } from '@/components/theme/theme-select'
 import { ClusterUiSelect } from '../cluster/cluster-ui'
 import WalletButton from '@/components/wallet/wallet-button'
 import Image from 'next/image'
 import { authClient } from '@/lib/auth/client'
+import {
+  Drawer,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+} from '@/components/ui/drawer'
 
 export function AppHeader({ links = [] }: { links?: { label: string; path: string }[] }) {
   const pathname = usePathname()
@@ -42,15 +48,11 @@ export function AppHeader({ links = [] }: { links?: { label: string; path: strin
           </div>
         </div>
 
-        <Button variant="outline" size="icon" className="md:hidden" onClick={() => setShowMenu(!showMenu)}>
-          {showMenu ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-        </Button>
 
         <div className="hidden md:flex items-center gap-4">
           {session?.user?.username && (
             <Button variant="outline" asChild>
-              <Link href={`/dashboard/${session.user.username}/settings`}>
-                <LayoutDashboard className="w-4 mr-2" />
+              <Link href={`/dashboard/${session.user.username}/`}>
                 Dashboard
               </Link>
             </Button>
@@ -60,9 +62,16 @@ export function AppHeader({ links = [] }: { links?: { label: string; path: strin
           <ThemeSelect />
         </div>
 
-        {showMenu && (
-          <div className="md:hidden fixed inset-x-0 top-[52px] bottom-0 bg-neutral-100/95 dark:bg-neutral-900/95 backdrop-blur-sm">
-            <div className="flex flex-col p-4 gap-4 border-t dark:border-neutral-800">
+        <Drawer open={showMenu} onOpenChange={setShowMenu} direction="bottom">
+          <Button variant="outline" size="icon" className="md:hidden" onClick={() => setShowMenu(!showMenu)}>
+            <Menu className="h-6 w-6" />
+          </Button>
+
+          <DrawerContent>
+            <DrawerHeader>
+              <DrawerTitle></DrawerTitle>
+            </DrawerHeader>
+            <div className="flex flex-col p-4 gap-4 ">
               <ul className="flex flex-col gap-4">
                 {links.map(({ label, path }) => (
                   <li key={path}>
@@ -78,9 +87,8 @@ export function AppHeader({ links = [] }: { links?: { label: string; path: strin
               </ul>
               <div className="flex flex-col gap-4">
                 {session?.user?.username && (
-                  <Button variant="ghost" className="justify-start" asChild>
+                  <Button variant="outline" className="justify-center" asChild>
                     <Link href={`/dashboard/${session.user.username}/settings`} onClick={() => setShowMenu(false)}>
-                      <LayoutDashboard className="w-4 h-4 mr-2" />
                       Dashboard
                     </Link>
                   </Button>
@@ -90,8 +98,8 @@ export function AppHeader({ links = [] }: { links?: { label: string; path: strin
                 <ThemeSelect />
               </div>
             </div>
-          </div>
-        )}
+          </DrawerContent>
+        </Drawer>
       </div>
     </header>
   )

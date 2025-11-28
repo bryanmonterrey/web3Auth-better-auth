@@ -82,7 +82,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     }
     return (
         <>
-        <div className="h-screen">
+        <div className="h-screen scroll-smooth hidden-scrollbar">
             <DashboardHeader />
             <AppContainer>
                 {children}
