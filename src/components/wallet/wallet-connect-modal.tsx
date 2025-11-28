@@ -191,7 +191,7 @@ export function WalletConnectModal({ open, onOpenChange }: WalletConnectModalPro
                                         )}
                                     </div>
                                     <div className="flex flex-col items-start">
-                                        <span className="font-semibold text-base">
+                                        <span className="font-semibold text-sm">
                                             {wallet.adapter.name}
                                         </span>
                                     </div>
