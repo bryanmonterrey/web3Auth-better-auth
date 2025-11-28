@@ -15,7 +15,7 @@ import Image from "next/image";
 import { authClient } from "@/lib/auth/client";
 import { toast } from "sonner";
 import { useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
+import { useTransitionRouter } from 'next-view-transitions'
 
 interface WalletConnectModalProps {
     open: boolean;
@@ -23,7 +23,7 @@ interface WalletConnectModalProps {
 }
 
 export function WalletConnectModal({ open, onOpenChange }: WalletConnectModalProps) {
-    const router = useRouter();
+    const router = useTransitionRouter();
     const { wallets, select, connected, publicKey, signMessage } = useWallet();
     const [isLoading, startTransition] = useTransition();
     const [loadingAction, setLoadingAction] = useState<string>("");

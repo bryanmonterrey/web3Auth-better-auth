@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
+import { useTransitionRouter } from 'next-view-transitions'
 import { authClient } from "@/lib/auth/client";
 import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -24,7 +25,7 @@ type OnboardingStep =
     | "complete";
 
 export default function OnboardingDialog() {
-    const router = useRouter();
+    const router = useTransitionRouter();
     const searchParams = useSearchParams();
     const [isOpen, setIsOpen] = useState(false);
     const [step, setStep] = useState<OnboardingStep>("wallet_setup");

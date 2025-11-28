@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
+import { useTransitionRouter } from 'next-view-transitions'
 import { authClient } from "@/lib/auth/client";
 import { AppHeader } from "@/components/app-ui/app-header";
 import { AppContainer } from "@/components/app-ui/app-container";
@@ -9,7 +10,7 @@ import { AppContainer } from "@/components/app-ui/app-container";
 
 export default function BrowseLayoutClient({ children }: { children: React.ReactNode }) {
     const { data: sessionData, isPending: isLoading } = authClient.useSession();
-    const router = useRouter();
+    const router = useTransitionRouter();
     const pathname = usePathname();
     const [redirectTimer, setRedirectTimer] = useState<NodeJS.Timeout | null>(null);
 

@@ -1,11 +1,11 @@
 "use client";
 
 import { useEffect, Suspense } from "react";
-import { useRouter } from "next/navigation";
+import { useTransitionRouter } from 'next-view-transitions'
 import { Loader2 } from "lucide-react";
 
 function AuthCallbackContent() {
-  const router = useRouter();
+  const router = useTransitionRouter();
 
   useEffect(() => {
     router.replace("/");

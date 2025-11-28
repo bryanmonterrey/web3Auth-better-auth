@@ -3,7 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import AppProviders from "@/components/app-ui/app-providers";
 import { AppLayout } from "@/components/app-ui/app-layout";
-
+import { ViewTransitions } from 'next-view-transitions'
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -27,6 +27,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
+    <ViewTransitions>
     <html lang="en" className="scroll-smooth hidden-scrollbar">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased hidden-scrollbar`}
@@ -36,5 +37,6 @@ export default function RootLayout({
         </AppProviders>
       </body>
     </html>
+    </ViewTransitions>
   );
 }

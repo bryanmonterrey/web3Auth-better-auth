@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
+import { useTransitionRouter } from 'next-view-transitions'
 import { useWallet } from "@solana/wallet-adapter-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -24,7 +24,7 @@ function shortenWalletAddress(address: string): string {
 }
 
 export default function WalletButton() {
-    const router = useRouter();
+    const router = useTransitionRouter();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const isSigningOut = useRef(false);
     const isAutoSignInTriggered = useRef(false);

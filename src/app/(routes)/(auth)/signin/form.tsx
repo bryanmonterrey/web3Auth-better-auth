@@ -11,7 +11,7 @@ import { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { authClient } from "@/lib/auth/client";
-import { useRouter } from "next/navigation";
+import { useTransitionRouter } from 'next-view-transitions'
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
@@ -23,7 +23,7 @@ import { AtSign } from "lucide-react";
 
 export default function SignInForm() {
   const [isPending, startTransition] = useTransition();
-  const router = useRouter();
+  const router = useTransitionRouter();
 
   const form = useForm<SignInValues>({
     resolver: zodResolver(SignInSchema),

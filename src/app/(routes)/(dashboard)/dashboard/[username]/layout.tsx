@@ -1,15 +1,16 @@
 "use client";
 
 import React, { useEffect } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { authClient } from "@/lib/auth/client";
+import { useTransitionRouter } from 'next-view-transitions'
 import { DashboardHeader } from "@/components/dashboard-ui/dashboard-header";
 import { Skeleton } from "@/components/ui/skeleton";
 import { AppContainer } from "@/components/app-ui/app-container";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
     const params = useParams();
-    const router = useRouter();
+    const router = useTransitionRouter();
     const { data: session, isPending } = authClient.useSession();
     const usernameFromUrl = params.username as string;
 
