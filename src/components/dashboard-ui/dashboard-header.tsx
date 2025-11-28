@@ -60,8 +60,10 @@ export function DashboardHeader() {
               </Button>
               <div className="flex flex-col gap-4">
                 <WalletButton />
-                <ClusterUiSelect />
-                <ThemeSelect />
+                <div className="hidden">
+                  <ClusterUiSelect />
+                  <ThemeSelect />
+                </div>
               </div>
             </div>
           </DrawerContent>

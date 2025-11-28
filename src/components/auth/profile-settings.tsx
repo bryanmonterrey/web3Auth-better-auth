@@ -180,9 +180,6 @@ export default function ProfileSettings() {
                         placeholder="Enter username"
                         className="w-full px-4 py-3 bg-neutral-900/50 border border-neutral-800 rounded-full text-white placeholder:text-neutral-500 focus:outline-none"
                     />
-                    <p className="text-xs text-neutral-500 mt-1">
-                        4-15 characters, letters, numbers, underscores and hyphens only
-                    </p>
                 </div>
 
                 {/* Display Name */}

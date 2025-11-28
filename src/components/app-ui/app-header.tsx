@@ -90,14 +90,16 @@ export function AppHeader({ links = [] }: { links?: { label: string; path: strin
               <div className="flex flex-col gap-4">
                 {session?.user?.username && (
                   <Button variant="outline" className="justify-center" asChild>
-                    <Link href={`/dashboard/${session.user.username}/settings`} onClick={() => setShowMenu(false)}>
+                    <Link href={`/dashboard/${session.user.username}`} onClick={() => setShowMenu(false)}>
                       Dashboard
                     </Link>
                   </Button>
                 )}
                 <WalletButton />
-                <ClusterUiSelect />
-                <ThemeSelect />
+                <div className="hidden">
+                  <ClusterUiSelect />
+                  <ThemeSelect />
+                </div>
               </div>
             </div>
           </DrawerContent>

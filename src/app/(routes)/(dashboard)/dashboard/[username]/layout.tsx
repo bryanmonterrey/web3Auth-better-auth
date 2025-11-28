@@ -32,7 +32,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 `Unauthorized access attempt: User "${session.user.username}" tried to access dashboard for "${usernameFromUrl}"`
             );
             // Redirect to their own dashboard
-            router.push(`/dashboard/${session.user.username}/settings`);
+            router.push(`/dashboard/${session.user.username}`);
         }
     }, [session, isPending, usernameFromUrl, router]);
 
