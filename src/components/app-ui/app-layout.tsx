@@ -14,9 +14,8 @@ export function AppLayout({
     links?: { label: string; path: string }[]
 }) {
     return (
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-            <div className="flex flex-col min-h-screen">
-                <main className="flex-grow">
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>      
+                <main className="flex flex-col h-screen overflow-y-auto">
                     <ClusterChecker>
                         {children}
                     </ClusterChecker>
@@ -24,8 +23,6 @@ export function AppLayout({
                         <OnboardingDialog />
                     </Suspense>
                 </main>
-            </div>
-
         </ThemeProvider>
     )
 }

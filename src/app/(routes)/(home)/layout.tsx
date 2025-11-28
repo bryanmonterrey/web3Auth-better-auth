@@ -50,7 +50,7 @@ export default function BrowseLayoutClient({ children }: { children: React.React
     return (
         <>
             <AppHeader />
-            <div className="transition-all ease-linear duration-300 hidden-scrollbar flex h-[calc(100dvh-52px)]">
+            <div className="transition-all ease-linear duration-300 hidden-scrollbar overflow-y-auto">
                 <AppContainer>
                     {/* Only render children when not in a loading state */}
                     {children}

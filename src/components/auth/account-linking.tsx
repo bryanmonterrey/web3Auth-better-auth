@@ -151,8 +151,11 @@ export default function AccountLinking() {
         <div className="space-y-6 w-full">
             {/* Header */}
             <div>
-                <h2 className="text-xl font-bold">Linked Accounts</h2>
-                
+                {loading ? (
+                    <Skeleton className="h-7 w-48 rounded-full" />
+                ) : (
+                    <h2 className="text-xl font-semibold">Linked Accounts</h2>
+                )}
             </div>
 
             {error && (
@@ -162,11 +165,23 @@ export default function AccountLinking() {
             )}
 
             {/* Wallet Address */}
-            {session?.user?.wallet_address && (
-                <div className="bg-neutral-900 border border-neutral-800 rounded-3xl p-4">
+            {loading ? (
+                <div className="bg-neutral-800/40 rounded-3xl p-4">
                     <div className="flex items-start justify-between">
                         <div className="flex gap-4 flex-1">
-                            <div className="p-3 bg-purple-500/20 rounded-2xl">
+                            <Skeleton className="w-12 h-12 rounded-2xl" />
+                            <div className="flex-1 space-y-2">
+                                <Skeleton className="h-5 w-32" />
+                                <Skeleton className="h-4 w-48" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            ) : session?.user?.wallet_address && (
+                <div className="bg-neutral-800/40 rounded-3xl p-4">
+                    <div className="flex items-start justify-between">
+                        <div className="flex gap-4 flex-1">
+                            <div className="p-3 bg-neutral-900/50 rounded-2xl">
                                 <span className="text-2xl">🔐</span>
                             </div>
                             <div className="flex-1">
@@ -190,13 +205,13 @@ export default function AccountLinking() {
             {loading ? (
                 <div className="space-y-3">
                     {[1, 2, 3, 4].map((i) => (
-                        <div key={i} className="bg-neutral-900 border border-neutral-800 rounded-3xl p-4">
+                        <div key={i} className="bg-neutral-800/40 rounded-3xl p-4">
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center gap-3 flex-1">
                                     <Skeleton className="w-10 h-10 rounded-full" />
-                                    <Skeleton className="h-5 w-24" />
+                                    <Skeleton className="h-5 w-24 rounded-full" />
                                 </div>
-                                <Skeleton className="w-20 h-9 rounded-lg" />
+                                <Skeleton className="w-20 h-9 rounded-full" />
                             </div>
                         </div>
                     ))}
@@ -210,12 +225,12 @@ export default function AccountLinking() {
                         return (
                             <div
                                 key={provider.id}
-                                className={`bg-neutral-900 border rounded-3xl p-4 ${linked ? "border-green-500/30 bg-green-500/5" : "border-neutral-800"
+                                className={`bg-neutral-800/40 rounded-3xl p-4 ${linked ? "border-green-500/30 bg-green-500/5" : "border-neutral-800"
                                     }`}
                             >
                                 <div className="flex items-start justify-between">
                                     <div className="flex gap-4 flex-1">
-                                        <div className={`p-3 ${linked ? "bg-green-500/20" : "bg-neutral-800"} rounded-2xl`}>
+                                        <div className={`p-3 justify-center my-auto items-center  ${linked ? "bg-green-500/20" : "bg-neutral-900/50"} rounded-2xl`}>
                                             <span className="text-2xl">{provider.icon}</span>
                                         </div>
 
@@ -258,10 +273,10 @@ export default function AccountLinking() {
                                             variant="outline"
                                             size="sm"
                                             disabled={linking === provider.id}
-                                            className="ml-4"
+                                            className="ml-4 bg-white/5 hover:bg-white/10 border-none"
                                         >
                                             {linking === provider.id ? (
-                                                <div className="w-4 h-4 border-2 border-neutral-400 border-t-transparent rounded-full animate-spin" />
+                                                <div className="w-4 h-4 bg-white/5 hover:bg-white/10 rounded-full animate-spin" />
                                             ) : (
                                                 <>
                                                     <LinkIcon className="w-4 h-4 mr-2" />
@@ -276,20 +291,6 @@ export default function AccountLinking() {
                     })}
                 </div>
             )}
-
-            {/* Security Warning */}
-            <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-3xl p-4">
-                <div className="flex gap-3">
-                    <Shield className="w-5 h-5 text-yellow-500 mt-0.5" />
-                    <div className="space-y-1 text-sm">
-                        <p className="text-yellow-400 font-medium">Security Notice</p>
-                        <p className="text-neutral-300">
-                            You must have at least one authentication method (wallet or linked account) to access your account.
-                            We recommend keeping multiple methods linked for account recovery.
-                        </p>
-                    </div>
-                </div>
-            </div>
 
             {/* Unlink Confirmation Dialog */}
             <Dialog open={!!showUnlinkDialog} onOpenChange={() => setShowUnlinkDialog(null)}>

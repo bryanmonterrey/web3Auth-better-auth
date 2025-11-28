@@ -74,32 +74,31 @@ export default function SecurityAuditLog() {
             <div className="space-y-6 flex flex-col items-start justify-center">
                 {/* Header Skeleton */}
                 <div className="w-full">
-                    <Skeleton className="h-8 w-64 mb-2" />
-                    <Skeleton className="h-4 w-96" />
+                    <Skeleton className="h-7 w-64 mb-2 rounded-full" />
                 </div>
 
                 {/* Stats Skeleton */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
                     {[1, 2, 3].map((i) => (
-                        <div key={i} className="bg-neutral-900 border border-neutral-800 rounded-3xl p-4">
-                            <Skeleton className="h-4 w-24 mb-2" />
-                            <Skeleton className="h-8 w-16" />
+                        <div key={i} className="bg-neutral-800/40 rounded-3xl p-4">
+                            <Skeleton className="h-4 w-20 mb-2 rounded-full" />
+                            <Skeleton className="h-5 w-16 rounded-full" />
                         </div>
                     ))}
                 </div>
 
                 {/* Table Skeleton */}
-                <div className="bg-neutral-900 border border-neutral-800 rounded-3xl overflow-hidden w-full max-w-sm">
+                <div className="bg-neutral-800/40 rounded-3xl overflow-hidden w-full max-w-sm">
                     <div className="p-6 space-y-4">
                         {[1, 2, 3, 4, 5].map((i) => (
                             <div key={i} className="flex items-center gap-4">
-                                <Skeleton className="w-10 h-10 rounded-lg" />
+                                <Skeleton className="w-10 h-10 rounded-full" />
                                 <div className="flex-1 space-y-2">
-                                    <Skeleton className="h-5 w-48" />
-                                    <Skeleton className="h-4 w-32" />
+                                    <Skeleton className="h-5 w-48 rounded-full" />
+                                    <Skeleton className="h-4 w-32 rounded-full" />
                                 </div>
                                 <Skeleton className="h-6 w-16 rounded-full" />
-                                <Skeleton className="h-4 w-32" />
+                                <Skeleton className="h-4 w-32 rounded-full" />
                             </div>
                         ))}
                     </div>
@@ -119,19 +118,19 @@ export default function SecurityAuditLog() {
             </div>
 
             {/* Stats */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="bg-neutral-900 border border-neutral-800 rounded-3xl p-4">
-                    <p className="text-neutral-400 text-sm">Total Events</p>
+            <div className="grid grid-cols-3 gap-3 w-full">
+                <div className="bg-neutral-800/40  col-span-1 rounded-3xl p-4">
+                    <p className="text-neutral-400 text-sm">Events</p>
                     <p className="text-2xl font-bold text-white mt-1">{logs.length}</p>
                 </div>
-                <div className="bg-neutral-900 border border-neutral-800 rounded-3xl p-4">
-                    <p className="text-neutral-400 text-sm">Phrase Reveals</p>
+                <div className="bg-neutral-800/40 col-span-1 rounded-3xl p-4">
+                    <p className="text-neutral-400 text-sm">Reveals</p>
                     <p className="text-2xl font-bold text-white mt-1">
                         {logs.filter((l) => l.action === "reveal_phrase").length}
                     </p>
                 </div>
-                <div className="bg-neutral-900 border border-neutral-800 rounded-3xl p-4">
-                    <p className="text-neutral-400 text-sm">Key Exports</p>
+                <div className="bg-neutral-800/40 col-span-1 rounded-3xl p-4">
+                    <p className="text-neutral-400 text-sm">Exports</p>
                     <p className="text-2xl font-bold text-white mt-1">
                         {logs.filter((l) => l.action === "export_key").length}
                     </p>
@@ -139,10 +138,10 @@ export default function SecurityAuditLog() {
             </div>
 
             {/* Audit Log Table */}
-            <div className="bg-neutral-900 border border-neutral-800 rounded-3xl overflow-hidden max-w-sm">
+            <div className="bg-neutral-800/40 rounded-3xl overflow-hidden max-w-sm">
                 <div className="overflow-x-auto">
                     <table className="w-full max-w-sm">
-                        <thead className="bg-neutral-800 border-b border-neutral-700">
+                        <thead className="bg-neutral-800">
                             <tr>
                                 <th className="px-6 py-3 text-left text-xs font-medium text-neutral-400 uppercase tracking-wider">
                                     Action
@@ -208,21 +207,6 @@ export default function SecurityAuditLog() {
                             )}
                         </tbody>
                     </table>
-                </div>
-            </div>
-
-            {/* Security Tips */}
-            <div className="bg-blue-500/10 border border-blue-500/20 rounded-3xl p-4">
-                <div className="flex gap-3">
-                    <Shield className="w-5 h-5 text-blue-500 mt-0.5" />
-                    <div className="space-y-1 text-sm">
-                        <p className="text-blue-400 font-medium">Security Tips</p>
-                        <ul className="text-neutral-300 space-y-1 list-disc list-inside">
-                            <li>Review this log regularly for suspicious activity</li>
-                            <li>If you see unfamiliar IP addresses, change your password immediately</li>
-                            <li>Enable passkey authentication for additional security</li>
-                        </ul>
-                    </div>
                 </div>
             </div>
         </div>

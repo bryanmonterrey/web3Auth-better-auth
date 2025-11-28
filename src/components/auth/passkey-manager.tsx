@@ -152,18 +152,21 @@ export default function PasskeyManager() {
             {/* Header */}
             <div className="flex items-center justify-between">
                 <div>
-                    <h2 className="text-xl font-semibold">Passkey Management</h2>
+                    {loading ? (
+                        <Skeleton className="h-7 w-48 rounded-full" />
+                    ) : (
+                        <h2 className="text-xl font-semibold">Passkey Management</h2>
+                    )}
                 </div>
-                
             </div>
 
             {/* Passkeys List */}
             {loading ? (
                 <div className="space-y-2">
                     {[1, 2, 3].map((i) => (
-                        <div key={i} className="bg-neutral-900 border border-neutral-800 rounded-3xl p-4">
+                        <div key={i} className="bg-neutral-800/40 rounded-3xl p-4">
                             <div className="flex items-center justify-between">
-                                <div className="flex items-center gap-3 flex-1">
+                                <div className="flex items-center  gap-3 flex-1">
                                     <Skeleton className="w-10 h-10 rounded-2xl" />
                                     <div className="space-y-2 flex-1">
                                         <Skeleton className="h-5 w-32" />
@@ -179,7 +182,7 @@ export default function PasskeyManager() {
                     ))}
                 </div>
             ) : passkeys.length === 0 ? (
-                <div className="bg-neutral-900 border border-neutral-800 rounded-lg p-8 text-center">
+                <div className="bg-neutral-800/40 rounded-4xl p-8 text-center">
                     <Smartphone className="w-12 h-12 text-neutral-600 mx-auto mb-4" />
                     <h3 className="text-lg font-medium mb-2">No Passkeys Yet</h3>
                     <p className="text-neutral-400 text-sm mb-4">
@@ -188,7 +191,7 @@ export default function PasskeyManager() {
                     <Button
                         onClick={() => setShowAddDialog(true)}
                         variant="outline"
-                        className="bg-neutral-800 border-neutral-700"
+                        className="bg-neutral-800 border-neutral-800"
                     >
                         <Plus className="w-4 h-4 mr-2" />
                         Add Your First Passkey
@@ -199,11 +202,11 @@ export default function PasskeyManager() {
                     {passkeys.map((passkey) => (
                         <div
                             key={passkey.id}
-                            className="bg-neutral-900 border border-neutral-800 rounded-3xl p-4 flex items-center justify-between hover:bg-neutral-800/50 transition-colors"
+                            className="bg-neutral-800/40 rounded-3xl p-4 flex items-center justify-between transition-colors"
                         >
                             <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 bg-blue-500/20 rounded-lg flex items-center justify-center">
-                                    <Smartphone className="w-5 h-5 text-blue-500" />
+                                <div className="w-10 h-10 bg-neutral-800/20 rounded-lg flex items-center justify-center">
+                                    <Smartphone className="w-5 h-5 text-neutral-600" />
                                 </div>
                                 <div>
                                     <h3 className="font-medium">
@@ -220,7 +223,7 @@ export default function PasskeyManager() {
                                     onClick={() => openRenameDialog(passkey)}
                                     variant="outline"
                                     size="sm"
-                                    className="bg-neutral-800 border-neutral-700"
+                                    className="bg-neutral-800 border-neutral-800"
                                 >
                                     <Edit className="w-4 h-4" />
                                 </Button>
@@ -228,7 +231,7 @@ export default function PasskeyManager() {
                                     onClick={() => openDeleteDialog(passkey)}
                                     variant="outline"
                                     size="sm"
-                                    className="bg-neutral-800 border-neutral-700 text-red-400 hover:text-red-300"
+                                    className="bg-neutral-800 border-neutral-800 text-red-400 hover:text-red-300"
                                     disabled={passkeys.length <= 1}
                                 >
                                     <Trash2 className="w-4 h-4" />
@@ -238,10 +241,11 @@ export default function PasskeyManager() {
                     ))}
                     <div className="flex justify-end items-end w-full">
                         <Button
-                        onClick={() => setShowAddDialog(true)}
-                        className="bg-neutral-900 border-neutral-800 hover:bg-neutral-800 text-neutral-200"
+                            variant="outline"
+                            onClick={() => setShowAddDialog(true)}
+                            className=" text-neutral-200"
                         >
-                        Add Passkey
+                            Add Passkey
                         </Button>
                     </div>
                 </div>

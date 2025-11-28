@@ -5,6 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth/client";
 import { DashboardHeader } from "@/components/dashboard-ui/dashboard-header";
 import { Skeleton } from "@/components/ui/skeleton";
+import { AppContainer } from "@/components/app-ui/app-container";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
     const params = useParams();
@@ -62,7 +63,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         return (
             <>
                 <DashboardHeader />
-                <div className="transition-all hidden-scrollbar flex h-[calc(100vh-52px)] items-center justify-start p-6">
+                <div className="transition-all hidden-scrollbar overflow-y-auto flex h-[calc(100vh-52px)] items-center justify-start p-6">
                     <div className="w-full max-w-sm mx-auto space-y-8 flex flex-col items-center">
                         <div className="space-y-2 text-center">
                             <Skeleton className="h-9 w-48 mx-auto" />
@@ -81,9 +82,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     }
     return (
         <>
-            <AppHeader />
-            <div className="transition-all hidden-scrollbar flex h-[calc(100vh-52px)]">
+        <div className="h-screen">
+            <DashboardHeader />
+            <AppContainer>
                 {children}
+            </AppContainer>
             </div>
         </>
     );

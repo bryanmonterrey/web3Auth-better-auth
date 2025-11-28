@@ -15,15 +15,12 @@ export function DashboardHeader() {
   const [showMenu, setShowMenu] = useState(false)
 
   return (
-    <header className="relative z-50 px-4 py-2 dark:text-neutral-400 border-b dark:border-neutral-800">
+    <header className="w-full absolute bg-transparent top-0 fixed z-50 px-4 py-2 dark:text-neutral-400">
       <div className="mx-auto flex justify-between items-center">
-        <div className="flex items-baseline gap-4">
+        <div className="flex items-center gap-4">
           <Link className="" href="/">
             <Image src="/logo.svg" alt="Logo" width={35} height={35} />
           </Link>
-          <div className="hidden md:flex items-center">
-            <span className="text-sm text-neutral-500">Dashboard</span>
-          </div>
         </div>
 
         <Button variant="outline" size="icon" className="md:hidden" onClick={() => setShowMenu(!showMenu)}>
@@ -31,10 +28,9 @@ export function DashboardHeader() {
         </Button>
 
         <div className="hidden md:flex items-center gap-4">
-          <Button variant="ghost" size="sm" asChild>
+          <Button variant="outline" asChild>
             <Link href="/">
-              <Home className="w-4 h-4 mr-2" />
-              Home
+              Exit dashboard
             </Link>
           </Button>
           <WalletButton />

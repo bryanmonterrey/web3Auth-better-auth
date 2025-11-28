@@ -39,14 +39,14 @@ export function AnimatedTabs({ tabs, activeTab: externalActiveTab, onTabChange }
         ref={containerRef}
         className="absolute z-10 w-full overflow-hidden [clip-path:inset(0px_75%_0px_0%_round_17px)] [transition:clip-path_0.25s_ease]"
       >
-        <div className="relative flex w-full justify-center bg-primary">
+        <div className="relative flex w-full justify-center bg-neutral-800/70">
           {tabs.map((tab, index) => (
             <button
               key={index.toString()}
               type="button"
               onClick={() => onTabChange?.(tab)}
               className={cn(
-                "flex h-8 items-center rounded-full p-3 font-medium text-black text-sm/5.5",
+                "flex h-8 items-center rounded-full p-3 font-medium text-white/85 text-sm/5.5",
               )}
               tabIndex={-1}
             >
@@ -65,7 +65,7 @@ export function AnimatedTabs({ tabs, activeTab: externalActiveTab, onTabChange }
               type="button"
               ref={isActive ? activeTabRef : null}
               onClick={() => onTabChange?.(tab)}
-              className="flex h-8 items-center rounded-full p-3 font-medium text-white text-sm/5.5"
+              className="flex h-8 items-center rounded-full p-3 font-medium text-neutral-400 text-sm/5.5"
             >
               {tab}
             </button>

@@ -9,7 +9,7 @@ export default async function Home() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen px-4">
+    <div className="flex items-center justify-center h-full px-4">
       <div className="max-w-4xl mx-auto text-center space-y-8">
         {/* Hero Title */}
         <div className="space-y-4">
@@ -23,7 +23,7 @@ export default async function Home() {
               <p className="text-xl md:text-2xl text-neutral-400">
                 Logged in as
               </p>
-              <div className="inline-block px-6 py-3 bg-neutral-900 border border-neutral-800 rounded-2xl">
+              <div className="inline-block px-6 py-3 bg-neutral-800/70 border border-neutral-800 rounded-full">
                 <p className="text-lg md:text-xl font-mono text-white">
                   {me.user.wallet_address ? shortenAddress(me.user.wallet_address) : me.user.email}
                 </p>

@@ -165,7 +165,11 @@ export default function SessionManager() {
             {/* Header */}
             <div className="flex items-center justify-between">
                 <div>
-                    <h2 className="text-xl font-bold">Active Sessions</h2>
+                    {loading ? (
+                        <Skeleton className="h-7 w-48 rounded-full" />
+                    ) : (
+                        <h2 className="text-xl font-bold">Active Sessions</h2>
+                    )}
                 </div>
                 {sessions.length > 1 && (
                     <Button
@@ -190,7 +194,7 @@ export default function SessionManager() {
             {loading && sessions.length === 0 ? (
                 <div className="space-y-3">
                     {[1, 2].map((i) => (
-                        <div key={i} className="bg-neutral-900 border border-neutral-800 rounded-3xl p-4">
+                        <div key={i} className="bg-neutral-800/40 rounded-3xl p-4">
                             <div className="flex items-start justify-between">
                                 <div className="flex gap-4 flex-1">
                                     <Skeleton className="w-12 h-12 rounded-2xl" />
@@ -219,22 +223,22 @@ export default function SessionManager() {
                         return (
                             <div
                                 key={session.id}
-                                className={`bg-neutral-900 border rounded-3xl p-4 ${isCurrentSession
+                                className={`bg-neutral-800/40 rounded-3xl p-4 ${isCurrentSession
                                     ? "border-blue-500/50 bg-blue-500/5"
-                                    : "border-neutral-800"
+                                    : "border-neutral-900"
                                     }`}
                             >
                                 <div className="flex items-start justify-between">
                                     <div className="flex gap-4 flex-1">
-                                        <div className={`p-3 rounded-2xl ${isCurrentSession ? "bg-blue-500/20" : "bg-neutral-800"
+                                        <div className={`p-3 rounded-2xl justify-center my-auto items-center ${isCurrentSession ? "bg-blue-500/20" : "bg-neutral-900/50"
                                             }`}>
-                                            <DeviceIcon className={`w-6 h-6 ${isCurrentSession ? "text-blue-500" : "text-neutral-400"
+                                            <DeviceIcon className={`w-6 h-6 my-auto ${isCurrentSession ? "text-blue-500" : "text-neutral-400"
                                                 }`} />
                                         </div>
 
                                         <div className="flex-1">
                                             <div className="flex items-center gap-2 mb-1">
-                                                <h3 className="font-medium text-white">
+                                                <h3 className="font-medium text-neutral-400">
                                                     {getDeviceName(session.userAgent)}
                                                 </h3>
                                                 {isCurrentSession && (
@@ -265,7 +269,7 @@ export default function SessionManager() {
                                             variant="outline"
                                             size="sm"
                                             disabled={revoking === session.token}
-                                            className="ml-4"
+                                            className="ml-4 bg-white/5 hover:bg-white/10 text-neutral-400 hover:text-neutral-300 border-none"
                                         >
                                             {revoking === session.token ? (
                                                 "Revoking..."
@@ -283,21 +287,6 @@ export default function SessionManager() {
                     })}
                 </div>
             )}
-
-            {/* Security Tips */}
-            <div className="bg-blue-500/10 border border-blue-500/20 rounded-3xl p-4">
-                <div className="flex gap-3">
-                    <Shield className="w-5 h-5 text-blue-500 mt-0.5" />
-                    <div className="space-y-1 text-sm">
-                        <p className="text-blue-400 font-medium">Security Tips</p>
-                        <ul className="text-neutral-300 space-y-1 list-disc list-inside">
-                            <li>Revoke sessions from devices you no longer use</li>
-                            <li>If you see unfamiliar sessions, revoke them immediately</li>
-                            <li>You can have up to 5 active sessions at once</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
 
             {/* Revoke All Dialog */}
             <Dialog open={showRevokeAllDialog} onOpenChange={setShowRevokeAllDialog}>
