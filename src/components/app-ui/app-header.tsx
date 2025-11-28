@@ -52,7 +52,7 @@ export function AppHeader({ links = [] }: { links?: { label: string; path: strin
         <div className="hidden md:flex items-center gap-4">
           {session?.user?.username && (
             <Button variant="outline" asChild>
-              <Link href={`/dashboard/${session.user.username}/`}>
+              <Link href={`/dashboard/${session.user.username}`}>
                 Dashboard
               </Link>
             </Button>
