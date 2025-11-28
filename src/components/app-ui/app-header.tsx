@@ -58,8 +58,10 @@ export function AppHeader({ links = [] }: { links?: { label: string; path: strin
             </Button>
           )}
           <WalletButton />
-          <ClusterUiSelect />
-          <ThemeSelect />
+          <div className="hidden">
+            <ClusterUiSelect />
+            <ThemeSelect />
+          </div>
         </div>
 
         <Drawer open={showMenu} onOpenChange={setShowMenu} direction="bottom">

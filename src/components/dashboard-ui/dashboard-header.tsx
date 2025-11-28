@@ -37,8 +37,10 @@ export function DashboardHeader() {
             </Link>
           </Button>
           <WalletButton />
-          <ClusterUiSelect />
-          <ThemeSelect />
+          <div className="hidden">
+            <ClusterUiSelect />
+            <ThemeSelect />
+          </div>
         </div>
 
         <Drawer open={showMenu} onOpenChange={setShowMenu} direction="bottom">
