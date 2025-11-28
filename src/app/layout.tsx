@@ -28,15 +28,15 @@ export default function RootLayout({
 }>) {
   return (
     <ViewTransitions>
-    <html lang="en" className="scroll-smooth hidden-scrollbar">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased hidden-scrollbar`}
-      >
-        <AppProviders>
-          <AppLayout>{children}</AppLayout>
-        </AppProviders>
-      </body>
-    </html>
+      <html lang="en" className="scroll-smooth hidden-scrollbar" suppressHydrationWarning>
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} antialiased hidden-scrollbar`}
+        >
+          <AppProviders>
+            <AppLayout>{children}</AppLayout>
+          </AppProviders>
+        </body>
+      </html>
     </ViewTransitions>
   );
 }

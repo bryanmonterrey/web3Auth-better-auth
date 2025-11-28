@@ -135,7 +135,7 @@ export function WalletConnectModal({ open, onOpenChange }: WalletConnectModalPro
                         </div>
                         <div className="flex flex-col items-start">
                             <span className="font-semibold text-sm">
-                                {loadingAction === "passkey" ? "Signing in..." : "Sign In with Passkey"}
+                                {loadingAction === "passkey" ? "Signing in..." : "Passkey Sign In"}
                             </span>
                         </div>
                     </Button>
