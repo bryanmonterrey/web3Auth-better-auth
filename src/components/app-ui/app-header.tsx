@@ -49,7 +49,7 @@ export function AppHeader({ links = [] }: { links?: { label: string; path: strin
         </div>
 
 
-        <div className="hidden md:flex items-center gap-4">
+        <div className="flex items-center gap-2">
           {session?.user?.username && (
             <Button variant="outline" asChild>
               <Link href={`/dashboard/${session.user.username}`}>
@@ -63,47 +63,6 @@ export function AppHeader({ links = [] }: { links?: { label: string; path: strin
             <ThemeSelect />
           </div>
         </div>
-
-        <Drawer open={showMenu} onOpenChange={setShowMenu} direction="bottom">
-          <Button variant="outline" size="icon" className="md:hidden" onClick={() => setShowMenu(!showMenu)}>
-            <Menu className="h-6 w-6" />
-          </Button>
-
-          <DrawerContent>
-            <DrawerHeader>
-              <DrawerTitle></DrawerTitle>
-            </DrawerHeader>
-            <div className="flex flex-col p-4 gap-4 ">
-              <ul className="flex flex-col gap-4">
-                {links.map(({ label, path }) => (
-                  <li key={path}>
-                    <Link
-                      className={`hover:text-neutral-500 dark:hover:text-white block text-lg py-2  ${isActive(path) ? 'text-neutral-500 dark:text-white' : ''} `}
-                      href={path}
-                      onClick={() => setShowMenu(false)}
-                    >
-                      {label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-              <div className="flex flex-col gap-4">
-                {session?.user?.username && (
-                  <Button variant="outline" className="justify-center" asChild>
-                    <Link href={`/dashboard/${session.user.username}`} onClick={() => setShowMenu(false)}>
-                      Dashboard
-                    </Link>
-                  </Button>
-                )}
-                <WalletButton />
-                <div className="hidden">
-                  <ClusterUiSelect />
-                  <ThemeSelect />
-                </div>
-              </div>
-            </div>
-          </DrawerContent>
-        </Drawer>
       </div>
     </header>
   )

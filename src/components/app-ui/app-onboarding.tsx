@@ -382,7 +382,7 @@ export default function OnboardingDialog() {
                             <Button
                                 onClick={handleUsernameSubmit}
                                 size="lg"
-                                className="w-full bg-zinc-900 hover:bg-zinc-800 text-white font-semibold py-6 rounded-full"
+                                className="w-full bg-zinc-900 border border-zinc-600/10 hover:bg-zinc-800 text-white font-semibold py-6 rounded-full"
                                 disabled={!username.trim()}
                             >
                                 Next
@@ -407,7 +407,7 @@ export default function OnboardingDialog() {
                             <Button
                                 onClick={handleAvatarUpload}
                                 size="lg"
-                                className="w-full bg-neutral-900 hover:bg-neutral-800 text-white font-semibold py-6 rounded-full"
+                                className="w-full bg-neutral-900 border border-zinc-600/10 hover:bg-neutral-800 text-white font-semibold py-6 rounded-full"
                                 disabled={loading || !avatarFile}
                             >
                                 {loading ? (

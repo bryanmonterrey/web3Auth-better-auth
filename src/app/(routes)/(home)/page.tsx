@@ -23,7 +23,7 @@ export default async function Home() {
               <p className="text-xl md:text-2xl text-neutral-400">
                 Logged in as
               </p>
-              <div className="inline-block px-6 py-3 bg-neutral-800/70 border border-neutral-800 rounded-full">
+              <div className="inline-block px-6 py-3 bg-matte rounded-full">
                 <p className="text-lg md:text-xl font-mono text-white">
                   {me.user.wallet_address ? shortenAddress(me.user.wallet_address) : me.user.email}
                 </p>

@@ -30,44 +30,17 @@ export function DashboardHeader() {
         </div>
 
 
-        <div className="hidden md:flex items-center gap-4">
+        <div className="flex items-center gap-2 ">
           <Button variant="outline" asChild>
             <Link href="/">
               Exit dashboard
             </Link>
           </Button>
-          <WalletButton />
           <div className="hidden">
             <ClusterUiSelect />
             <ThemeSelect />
           </div>
         </div>
-
-        <Drawer open={showMenu} onOpenChange={setShowMenu} direction="bottom">
-          <Button variant="outline" size="icon" className="md:hidden" onClick={() => setShowMenu(!showMenu)}>
-            <Menu className="h-6 w-6" />
-          </Button>
-
-          <DrawerContent>
-            <DrawerHeader>
-              <DrawerTitle></DrawerTitle>
-            </DrawerHeader>
-            <div className="flex flex-col p-4 gap-4">
-              <Button variant="outline" className="justify-center" asChild>
-                <Link href="/" onClick={() => setShowMenu(false)}>
-                  Exit dashboard
-                </Link>
-              </Button>
-              <div className="flex flex-col gap-4">
-                <WalletButton />
-                <div className="hidden">
-                  <ClusterUiSelect />
-                  <ThemeSelect />
-                </div>
-              </div>
-            </div>
-          </DrawerContent>
-        </Drawer>
       </div>
     </header>
   )

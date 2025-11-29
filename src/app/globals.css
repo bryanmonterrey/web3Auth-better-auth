@@ -121,6 +121,7 @@
   --animate-accordion-up: accordion-up 0.2s ease-out;
   --color-offwhite: #FBFBFB;
   --color-card: #11111A;
+  --color-matte: #171717;
 
   @keyframes accordion-down {
     from {
@@ -171,5 +172,10 @@ body,
     display: none !important;
     width: 0 !important;
     height: 0 !important;
+  }
+
+  .backdrop-blur-custom {
+    -webkit-backdrop-filter: blur(30px);
+    backdrop-filter: blur(30px);
   }
 }
