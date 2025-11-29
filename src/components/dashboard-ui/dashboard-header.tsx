@@ -15,6 +15,7 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from '@/components/ui/drawer'
+import { DashboardMenu } from './dashboard-menu'
 
 export function DashboardHeader() {
   const pathname = usePathname()
@@ -27,6 +28,7 @@ export function DashboardHeader() {
           <Link className="" href="/">
             <Image src="/logo.svg" alt="Logo" width={35} height={35} />
           </Link>
+          <DashboardMenu />
         </div>
 
 

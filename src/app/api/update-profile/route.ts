@@ -25,15 +25,21 @@ export async function POST(req: NextRequest) {
         const contentType = req.headers.get("content-type") || "";
 
         let username: string | null = null;
+        let displayName: string | null = null;
+        let bio: string | null = null;
         let avatarFile: File | null = null;
 
         // Handle both JSON (username only) and FormData (avatar only or both)
         if (contentType.includes("application/json")) {
             const body = await req.json();
             username = body.username;
+            displayName = body.displayName;
+            bio = body.bio;
         } else {
             const formData = await req.formData();
             username = formData.get("username") as string | null;
+            displayName = formData.get("displayName") as string | null;
+            bio = formData.get("bio") as string | null;
             avatarFile = formData.get("avatar") as File | null;
         }
 
@@ -59,6 +65,16 @@ export async function POST(req: NextRequest) {
             }
 
             updateData.username = username;
+        }
+
+        // Handle display name update
+        if (displayName !== null) {
+            updateData.name = displayName;
+        }
+
+        // Handle bio update
+        if (bio !== null) {
+            updateData.bio = bio;
         }
 
         // Handle avatar upload

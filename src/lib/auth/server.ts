@@ -112,6 +112,8 @@ export const auth = betterAuth({
             ...sessionUser,
             wallet_address: userData.wallet_address,
             username: userData.username,
+            name: userData.name,
+            bio: userData.bio,
             avatar_url: userData.avatar_url,
             role: userData.role,
             canAdmin: userData.role === "admin",

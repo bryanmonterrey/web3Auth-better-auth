@@ -56,7 +56,7 @@ export default function ProfileSettings() {
                 formData.append("displayName", displayName);
             }
 
-            if (bio) {
+            if (bio !== (session?.user?.bio || "")) {
                 formData.append("bio", bio);
             }
 
@@ -74,8 +74,15 @@ export default function ProfileSettings() {
                 throw new Error(data.error || "Failed to update profile");
             }
 
-            // Refresh session to get updated data
-            await authClient.getSession();
+            // Force session refresh and wait for it
+            const { data: newSession } = await authClient.getSession();
+            
+            // Update local state with new session data to clear "unsaved changes"
+            if (newSession?.user) {
+                setUsername(newSession.user.username || "");
+                setDisplayName(newSession.user.name || "");
+                setBio(newSession.user.bio || "");
+            }
 
             setSuccess("Profile updated successfully!");
             setAvatarFile(null);
