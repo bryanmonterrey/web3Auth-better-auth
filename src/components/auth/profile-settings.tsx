@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { authClient } from "@/lib/auth/client";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -22,6 +22,9 @@ export default function ProfileSettings() {
 
     const [resetCount, setResetCount] = useState(0);
 
+    // Track the last saved state to prevent toast from showing immediately after save
+    const savedDataRef = useRef<{ username: string; displayName: string; bio: string } | null>(null);
+
     useEffect(() => {
         if (session?.user) {
             setUsername(session.user.username || "");
@@ -29,6 +32,9 @@ export default function ProfileSettings() {
             setBio(session.user.bio || "");
             // Bio would come from session if it exists in the user object
             setIsLoading(false);
+
+            // Clear saved data ref when session updates
+            savedDataRef.current = null;
         }
     }, [session]);
 
@@ -74,14 +80,30 @@ export default function ProfileSettings() {
                 throw new Error(data.error || "Failed to update profile");
             }
 
-            // Force session refresh and wait for it
-            const { data: newSession } = await authClient.getSession();
-            
-            // Update local state with new session data to clear "unsaved changes"
-            if (newSession?.user) {
-                setUsername(newSession.user.username || "");
-                setDisplayName(newSession.user.name || "");
-                setBio(newSession.user.bio || "");
+            // Force session refresh - getSession with query forces a network request
+            const { data: freshSession } = await authClient.getSession({
+                fetchOptions: {
+                    cache: 'no-store'
+                }
+            });
+
+            // Update local state with the fresh session data
+            // This ensures hasChanges becomes false immediately
+            if (freshSession?.user) {
+                const newUsername = freshSession.user.username || "";
+                const newDisplayName = freshSession.user.name || "";
+                const newBio = freshSession.user.bio || "";
+
+                setUsername(newUsername);
+                setDisplayName(newDisplayName);
+                setBio(newBio);
+
+                // Store what we just saved
+                savedDataRef.current = {
+                    username: newUsername,
+                    displayName: newDisplayName,
+                    bio: newBio
+                };
             }
 
             setSuccess("Profile updated successfully!");
@@ -96,11 +118,21 @@ export default function ProfileSettings() {
         }
     };
 
-    const hasChanges =
-        username !== (session?.user?.username || "") ||
-        displayName !== (session?.user?.name || "") ||
-        bio !== (session?.user?.bio || "") ||
-        avatarFile !== null;
+    const hasChanges = (() => {
+        // If we just saved, compare against saved data instead of session
+        if (savedDataRef.current) {
+            return username !== savedDataRef.current.username ||
+                displayName !== savedDataRef.current.displayName ||
+                bio !== savedDataRef.current.bio ||
+                avatarFile !== null;
+        }
+
+        // Otherwise compare against session
+        return username !== (session?.user?.username || "") ||
+            displayName !== (session?.user?.name || "") ||
+            bio !== (session?.user?.bio || "") ||
+            avatarFile !== null;
+    })();
 
     const handleReset = () => {
         if (session?.user) {

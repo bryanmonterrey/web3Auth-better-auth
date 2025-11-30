@@ -58,23 +58,14 @@ export default function SettingsPage() {
                 </div>
 
                 {/* Animated Tabs */}
-                {loadingAccounts ? (
-                    <Skeleton className="h-10 w-full max-w-md rounded-full" />
-                ) : (
+            
                     <div className="flex justify-center">
                         <AnimatedTabs tabs={tabs} activeTab={activeTab} onTabChange={setActiveTab} />
                     </div>
-                )}
+                
 
                 {/* Content Container - Fixed Width */}
                 <div className="w-full">
-                    {loadingAccounts ? (
-                        <div className="space-y-4 rounded-full">
-                            <Skeleton className="h-8 w-48 rounded-full" />
-                            <Skeleton className="h-32 w-full rounded-3xl" />
-                            <Skeleton className="h-32 w-full rounded-3xl" />
-                        </div>
-                    ) : (
                         <>
                             {/* Wallet Section */}
                             {activeTab.toLowerCase() === "wallet" && (
@@ -100,8 +91,7 @@ export default function SettingsPage() {
                             {activeTab.toLowerCase() === "sessions" && (
                                 <SessionManager />
                             )}
-                        </>
-                    )}
+                        </>     
                 </div>
             </div>
         </div>
