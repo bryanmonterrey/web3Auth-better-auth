@@ -33,7 +33,7 @@ export default function WalletButton() {
     const isAutoSignInTriggered = useRef(false);
 
     const { publicKey, connected, connecting, disconnecting, disconnect, signMessage } = useWallet();
-    const { data: session, isLoading: loading, refetch } = useAuthSession();
+    const { data: session, isLoading: loading } = useAuthSession();
     const [isSigningIn, startSigningIn] = useTransition();
 
     const isSignedIn = !!session?.user;
@@ -61,7 +61,8 @@ export default function WalletButton() {
                     signMessage
                 });
 
-                await refetch();
+                // Invalidate session cache to update all components
+                queryClient.invalidateQueries({ queryKey: ["session"] });
                 router.refresh();
                 toast.success("Successfully signed in!");
             } catch (error) {
@@ -76,7 +77,7 @@ export default function WalletButton() {
                 }
             }
         });
-    }, [connected, publicKey, refetch, router, signMessage]);
+    }, [connected, publicKey, queryClient, router, signMessage]);
 
     const handleSignOut = useCallback(async () => {
         if (isSigningOut.current) return;
