@@ -1,7 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { authClient } from "@/lib/auth/client";
+import { useState } from "react";
 import { Link as LinkIcon, Unlink, Shield, AlertTriangle, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -12,6 +11,9 @@ import {
     DialogTitle,
     DialogDescription,
 } from "@/components/ui/dialog";
+import { useLinkedAccounts, useLinkAccount, useUnlinkAccount } from "@/hooks/use-linked-accounts";
+import { toast } from "sonner";
+import { useAuthSession } from "@/hooks/use-auth-session";
 
 interface LinkedAccount {
     id: string;
@@ -72,90 +74,31 @@ const providers = [
 ];
 
 export default function AccountLinking() {
-    const [linkedAccounts, setLinkedAccounts] = useState<LinkedAccount[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [linking, setLinking] = useState<string | null>(null);
-    const [unlinking, setUnlinking] = useState<string | null>(null);
+    const { data, isLoading, error } = useLinkedAccounts();
+    const linkAccount = useLinkAccount();
+    const unlinkAccount = useUnlinkAccount();
+    const { data: session } = useAuthSession();
+
+    const linkedAccounts = data?.accounts || [];
     const [showUnlinkDialog, setShowUnlinkDialog] = useState<string | null>(null);
-    const [error, setError] = useState<string | null>(null);
-    const { data: session } = authClient.useSession();
 
-    const loadLinkedAccounts = async () => {
-        try {
-            setLoading(true);
-            setError(null);
-
-            // Fetch user's linked accounts from Better Auth
-            // Note: Better Auth stores linked accounts in the 'account' table
-            const response = await fetch("/api/accounts");
-            if (!response.ok) {
-                throw new Error("Failed to load linked accounts");
-            }
-
-            const data = await response.json();
-            setLinkedAccounts(data.accounts || []);
-        } catch (err) {
-            console.error("Failed to load linked accounts:", err);
-            setError(err instanceof Error ? err.message : "Failed to load linked accounts");
-        } finally {
-            setLoading(false);
-        }
+    const handleLinkAccount = (provider: string) => {
+        linkAccount.mutate(provider);
     };
 
-    useEffect(() => {
-        loadLinkedAccounts();
-    }, []);
-
-    const linkAccount = async (provider: string) => {
-        try {
-            setLinking(provider);
-            setError(null);
-
-            // Use Better Auth's linkSocial method to link account to existing user
-            await authClient.linkSocial({
-                provider: provider as any,
-                callbackURL: window.location.href,
-            });
-
-            // The OAuth flow will redirect, so we don't need to do anything else here
-            // After redirect, the account will be linked
-        } catch (err) {
-            console.error(`Failed to link ${provider}:`, err);
-            setError(err instanceof Error ? err.message : `Failed to link ${provider}`);
-            setLinking(null);
+    const handleUnlinkAccount = (accountId: string, provider: string) => {
+        // Check if this is the last authentication method
+        const authMethodsCount = linkedAccounts.length + (session?.user?.wallet_address ? 1 : 0);
+        if (authMethodsCount <= 1) {
+            toast.error("Cannot unlink your only authentication method. Please add another method first.");
+            return;
         }
-    };
 
-    const unlinkAccount = async (accountId: string, provider: string) => {
-        try {
-            setUnlinking(accountId);
-            setError(null);
-
-            // Check if this is the last authentication method
-            const authMethodsCount = linkedAccounts.length + (session?.user?.wallet_address ? 1 : 0);
-            if (authMethodsCount <= 1) {
-                throw new Error("Cannot unlink your only authentication method. Please add another method first.");
-            }
-
-            const response = await fetch(`/api/auth/unlink-account`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ accountId, provider }),
-            });
-
-            if (!response.ok) {
-                const data = await response.json();
-                throw new Error(data.error || "Failed to unlink account");
-            }
-
-            setShowUnlinkDialog(null);
-            await loadLinkedAccounts();
-        } catch (err) {
-            console.error("Failed to unlink account:", err);
-            setError(err instanceof Error ? err.message : "Failed to unlink account");
-        } finally {
-            setUnlinking(null);
-        }
+        unlinkAccount.mutate({ accountId, provider }, {
+            onSuccess: () => {
+                setShowUnlinkDialog(null);
+            },
+        });
     };
 
     const isLinked = (providerId: string) => {
@@ -170,7 +113,7 @@ export default function AccountLinking() {
         <div className="space-y-4 w-full">
             {/* Header */}
             <div>
-                {loading ? (
+                {isLoading ? (
                     <Skeleton className="h-7 w-48 rounded-full" />
                 ) : (
                     <h2 className="text-xl font-semibold">Linked Accounts</h2>
@@ -179,12 +122,12 @@ export default function AccountLinking() {
 
             {error && (
                 <div className="bg-red-500/10 border border-red-500/20 rounded-3xl p-4">
-                    <p className="text-red-400 text-sm">{error}</p>
+                    <p className="text-red-400 text-sm">{error.message}</p>
                 </div>
             )}
 
             {/* Wallet Address */}
-            {loading ? (
+            {isLoading ? (
                 <div className="bg-neutral-800/40 rounded-3xl p-4">
                     <div className="flex items-start justify-between">
                         <div className="flex gap-4 flex-1">
@@ -223,7 +166,7 @@ export default function AccountLinking() {
             )}
 
             {/* Accounts List */}
-            {loading ? (
+            {isLoading ? (
                 <div className="space-y-3">
                     {[1, 2, 3, 4].map((i) => (
                         <div key={i} className="bg-neutral-800/40 rounded-3xl p-4">
@@ -266,7 +209,7 @@ export default function AccountLinking() {
                                                 )}
                                             </div>
                                             <p className="text-sm text-neutral-400">
-                                                {linked && account?.email ? account.email : provider.description}
+                                                {provider.description}
                                             </p>
                                         </div>
                                     </div>
@@ -276,10 +219,10 @@ export default function AccountLinking() {
                                             onClick={() => setShowUnlinkDialog(account?.id || null)}
                                             variant="outline"
                                             size="sm"
-                                            disabled={unlinking === account?.id}
+                                            disabled={unlinkAccount.isPending}
                                             className="ml-4"
                                         >
-                                            {unlinking === account?.id ? (
+                                            {unlinkAccount.isPending ? (
                                                 <div className="w-4 h-4 border-2 border-neutral-400 border-t-transparent rounded-full animate-spin" />
                                             ) : (
                                                 <>
@@ -290,13 +233,13 @@ export default function AccountLinking() {
                                         </Button>
                                     ) : (
                                         <Button
-                                            onClick={() => linkAccount(provider.id)}
+                                            onClick={() => linkAccount.mutate(provider.id)}
                                             variant="outline"
                                             size="sm"
-                                            disabled={linking === provider.id}
+                                            disabled={linkAccount.isPending}
                                             className="ml-4 bg-white/5 hover:bg-white/10 border-none"
                                         >
-                                            {linking === provider.id ? (
+                                            {linkAccount.isPending ? (
                                                 <div className="w-4 h-4 bg-white/5 hover:bg-white/10 rounded-full animate-spin" />
                                             ) : (
                                                 <>
@@ -338,14 +281,14 @@ export default function AccountLinking() {
                             onClick={() => {
                                 const account = linkedAccounts.find(a => a.id === showUnlinkDialog);
                                 if (account) {
-                                    unlinkAccount(account.id, account.provider);
+                                    unlinkAccount.mutate({ accountId: account.id, provider: account.provider });
                                 }
                             }}
                             variant="destructive"
                             className="flex-1"
-                            disabled={!!unlinking}
+                            disabled={unlinkAccount.isPending}
                         >
-                            {unlinking ? "Unlinking..." : "Unlink"}
+                            {unlinkAccount.isPending ? "Unlinking..." : "Unlink"}
                         </Button>
                     </div>
                 </DialogContent>

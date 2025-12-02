@@ -1,7 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { authClient } from "@/lib/auth/client";
+import { useState } from "react";
 import { Key, Trash2, Edit, Plus, Shield, Smartphone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -13,127 +12,63 @@ import {
     DialogDescription,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { usePasskeys, useAddPasskey, useRenamePasskey, useDeletePasskey } from "@/hooks/use-passkeys";
 
 interface Passkey {
     id: string;
-    name: string;
+    name: string | null;
     deviceType: string;
     backedUp: boolean;
-    createdAt: Date;
+    createdAt: Date | string | null;
 }
 
 export default function PasskeyManager() {
-    const [passkeys, setPasskeys] = useState<Passkey[]>([]);
-    const [loading, setLoading] = useState(true);
+    const { data, isLoading } = usePasskeys();
+    const addPasskey = useAddPasskey();
+    const renamePasskey = useRenamePasskey();
+    const deletePasskey = useDeletePasskey();
+
+    const passkeys = data?.passkeys || [];
+
     const [showAddDialog, setShowAddDialog] = useState(false);
     const [showRenameDialog, setShowRenameDialog] = useState(false);
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
     const [selectedPasskey, setSelectedPasskey] = useState<Passkey | null>(null);
     const [newName, setNewName] = useState("");
-    const [addingPasskey, setAddingPasskey] = useState(false);
 
-    useEffect(() => {
-        loadPasskeys();
-    }, []);
-
-    const loadPasskeys = async () => {
-        try {
-            setLoading(true);
-            const response = await fetch("/api/passkeys/list");
-
-            if (response.ok) {
-                const data = await response.json();
-                setPasskeys(data.passkeys || []);
-            } else {
-                throw new Error("Failed to load passkeys");
-            }
-        } catch (error) {
-            console.error("Failed to load passkeys:", error);
-            setPasskeys([]);
-        } finally {
-            setLoading(false);
-        }
+    const handleAddPasskey = () => {
+        addPasskey.mutate(newName, {
+            onSuccess: () => {
+                setShowAddDialog(false);
+                setNewName("");
+            },
+        });
     };
 
-    const handleAddPasskey = async () => {
-        try {
-            setAddingPasskey(true);
-
-            // Add passkey with optional name
-            const name = newName.trim() || `Passkey ${passkeys.length + 1} `;
-            await authClient.passkey.addPasskey({
-                name: name,
-            });
-
-            await loadPasskeys();
-            setShowAddDialog(false);
-            setNewName("");
-        } catch (error) {
-            console.error("Failed to add passkey:", error);
-            alert(error instanceof Error ? error.message : "Failed to add passkey");
-        } finally {
-            setAddingPasskey(false);
-        }
-    };
-
-    const handleRenamePasskey = async () => {
+    const handleRenamePasskey = () => {
         if (!selectedPasskey || !newName.trim()) return;
 
-        try {
-            const response = await fetch("/api/passkeys/rename", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    passkeyId: selectedPasskey.id,
-                    name: newName.trim(),
-                }),
-            });
-
-            if (!response.ok) {
-                const error = await response.json();
-                throw new Error(error.error || "Failed to rename passkey");
+        renamePasskey.mutate(
+            { passkeyId: selectedPasskey.id, name: newName },
+            {
+                onSuccess: () => {
+                    setShowRenameDialog(false);
+                    setNewName("");
+                    setSelectedPasskey(null);
+                },
             }
-
-            await loadPasskeys();
-            setShowRenameDialog(false);
-            setNewName("");
-            setSelectedPasskey(null);
-        } catch (error) {
-            console.error("Failed to rename passkey:", error);
-            alert(error instanceof Error ? error.message : "Failed to rename passkey");
-        }
+        );
     };
 
-    const handleDeletePasskey = async () => {
+    const handleDeletePasskey = () => {
         if (!selectedPasskey) return;
 
-        // Prevent deleting last passkey
-        if (passkeys.length <= 1) {
-            alert("Cannot delete your last passkey");
-            return;
-        }
-
-        try {
-            const response = await fetch("/api/passkeys/delete", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    passkeyId: selectedPasskey.id,
-                }),
-            });
-
-            if (!response.ok) {
-                const error = await response.json();
-                throw new Error(error.error || "Failed to delete passkey");
-            }
-
-            setShowDeleteDialog(false);
-            setSelectedPasskey(null);
-            await loadPasskeys();
-        } catch (error) {
-            console.error("Failed to delete passkey:", error);
-            alert(error instanceof Error ? error.message : "Failed to delete passkey");
-        }
+        deletePasskey.mutate({ passkeyId: selectedPasskey.id }, {
+            onSuccess: () => {
+                setShowDeleteDialog(false);
+                setSelectedPasskey(null);
+            },
+        });
     };
 
     const openRenameDialog = (passkey: Passkey) => {
@@ -152,7 +87,7 @@ export default function PasskeyManager() {
             {/* Header */}
             <div className="flex items-center justify-between">
                 <div>
-                    {loading ? (
+                    {isLoading ? (
                         <Skeleton className="h-7 w-48 rounded-full" />
                     ) : (
                         <h2 className="text-xl font-semibold">Passkey Management</h2>
@@ -161,7 +96,7 @@ export default function PasskeyManager() {
             </div>
 
             {/* Passkeys List */}
-            {loading ? (
+            {isLoading ? (
                 <div className="space-y-2">
                     {[1, 2, 3].map((i) => (
                         <div key={i} className="bg-neutral-800/40 rounded-3xl p-4">
@@ -214,7 +149,7 @@ export default function PasskeyManager() {
                                     </h3>
                                     <p className="text-sm text-neutral-400">
                                         {passkey.deviceType} • Added{" "}
-                                        {new Date(passkey.createdAt).toLocaleDateString()}
+                                        {passkey.createdAt ? new Date(passkey.createdAt).toLocaleDateString() : "Unknown"}
                                     </p>
                                 </div>
                             </div>
@@ -275,10 +210,10 @@ export default function PasskeyManager() {
                             </Button>
                             <Button
                                 onClick={handleAddPasskey}
-                                disabled={addingPasskey}
+                                disabled={addPasskey.isPending}
                                 className="flex-1 bg-blue-600 hover:bg-blue-700"
                             >
-                                {addingPasskey ? "Adding..." : "Add Passkey"}
+                                {addPasskey.isPending ? "Adding..." : "Add Passkey"}
                             </Button>
                         </div>
                     </div>

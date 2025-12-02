@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import { useTransitionRouter } from 'next-view-transitions'
 import { useWallet } from "@solana/wallet-adapter-react";
+import { useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import {
     DropdownMenu,
@@ -13,6 +14,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { WalletConnectModal } from "./wallet-connect-modal";
 import { authClient } from "@/lib/auth/client";
+import { useAuthSession } from "@/hooks/use-auth-session";
 import { signInWithSolana } from "@/lib/solana/sign-in";
 import { toast } from "sonner";
 import { Loader2, Copy, Wallet, LogOut } from "lucide-react";
@@ -25,12 +27,13 @@ function shortenWalletAddress(address: string): string {
 
 export default function WalletButton() {
     const router = useTransitionRouter();
+    const queryClient = useQueryClient();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const isSigningOut = useRef(false);
     const isAutoSignInTriggered = useRef(false);
 
     const { publicKey, connected, connecting, disconnecting, disconnect, signMessage } = useWallet();
-    const { data: session, isPending: loading, refetch } = authClient.useSession();
+    const { data: session, isLoading: loading, refetch } = useAuthSession();
     const [isSigningIn, startSigningIn] = useTransition();
 
     const isSignedIn = !!session?.user;
@@ -82,6 +85,9 @@ export default function WalletButton() {
             isSigningOut.current = true;
             await authClient.signOut();
 
+            // Invalidate session cache to immediately update UI
+            queryClient.invalidateQueries({ queryKey: ["session"] });
+
             if (disconnect) {
                 await disconnect();
             }
@@ -94,7 +100,7 @@ export default function WalletButton() {
         } finally {
             isSigningOut.current = false;
         }
-    }, [disconnect, router]);
+    }, [disconnect, queryClient, router]);
 
     const handleCopyAddress = useCallback(() => {
         if (walletAddress) {

@@ -13,7 +13,9 @@
       "Bash(find:*)",
       "Bash(git diff:*)",
       "Bash(bun remove:*)",
-      "Bash(bun add:*)"
+      "Bash(bun add:*)",
+      "Bash(bun update:*)",
+      "Bash(bun run build:*)"
     ],
     "deny": [],
     "ask": []

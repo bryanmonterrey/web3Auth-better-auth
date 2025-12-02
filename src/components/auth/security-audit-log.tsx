@@ -1,10 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { Shield, Eye, Key, UserPlus, UserMinus, Edit } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useAuditLogs } from "@/hooks/use-audit-logs";
 
-const actionIcons = {
+type ActionType = "reveal_phrase" | "export_key" | "passkey_added" | "passkey_removed" | "passkey_renamed";
+
+const actionIcons: Record<ActionType, typeof Eye> = {
     reveal_phrase: Eye,
     export_key: Key,
     passkey_added: UserPlus,
@@ -12,7 +14,7 @@ const actionIcons = {
     passkey_renamed: Edit,
 };
 
-const actionLabels = {
+const actionLabels: Record<ActionType, string> = {
     reveal_phrase: "Recovery Phrase Revealed",
     export_key: "Private Key Exported",
     passkey_added: "Passkey Added",
@@ -22,7 +24,7 @@ const actionLabels = {
 
 interface AuditLog {
     id: string;
-    action: keyof typeof actionIcons;
+    action: ActionType;
     ipAddress: string;
     userAgent: string;
     success: boolean;
@@ -31,26 +33,8 @@ interface AuditLog {
 }
 
 export default function SecurityAuditLog() {
-    const [logs, setLogs] = useState<AuditLog[]>([]);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        const fetchLogs = async () => {
-            try {
-                const response = await fetch("/api/audit-logs");
-                if (response.ok) {
-                    const data = await response.json();
-                    setLogs(data.logs || []);
-                }
-            } catch (error) {
-                console.error("Failed to fetch audit logs:", error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchLogs();
-    }, []);
+    const { data, isLoading } = useAuditLogs();
+    const logs = data?.logs || [];
 
     const formatDate = (dateString: string) => {
         const date = new Date(dateString);
@@ -69,7 +53,7 @@ export default function SecurityAuditLog() {
         return "💻 Desktop";
     };
 
-    if (loading) {
+    if (isLoading) {
         return (
             <div className="space-y-4 flex flex-col items-start justify-center">
                 {/* Header Skeleton */}
@@ -148,7 +132,8 @@ export default function SecurityAuditLog() {
                     </div>
                 ) : (
                     logs.map((log) => {
-                        const Icon = actionIcons[log.action];
+                        const Icon = actionIcons[log.action as ActionType] || Shield;
+                        const label = actionLabels[log.action as ActionType] || log.action;
                         return (
                             <div
                                 key={log.id}
@@ -160,10 +145,10 @@ export default function SecurityAuditLog() {
                                     </div>
                                     <div>
                                         <h3 className="font-medium text-white">
-                                            {actionLabels[log.action]}
+                                            {label}
                                         </h3>
                                         <p className="text-sm text-neutral-400">
-                                            {getDeviceInfo(log.userAgent)} • {log.ipAddress} • {formatDate(log.createdAt)}
+                                            {getDeviceInfo(log.userAgent || "")} • {log.ipAddress} • {formatDate(log.createdAt)}
                                         </p>
                                     </div>
                                 </div>

@@ -9,6 +9,7 @@ import { ClusterUiSelect } from '../cluster/cluster-ui'
 import WalletButton from '@/components/wallet/wallet-button'
 import Image from 'next/image'
 import { authClient } from '@/lib/auth/client'
+import { useAuthSession } from '@/hooks/use-auth-session'
 import {
   Drawer,
   DrawerContent,
@@ -19,7 +20,7 @@ import {
 export function AppHeader({ links = [] }: { links?: { label: string; path: string }[] }) {
   const pathname = usePathname()
   const [showMenu, setShowMenu] = useState(false)
-  const { data: session } = authClient.useSession()
+  const { data: session } = useAuthSession()
 
   function isActive(path: string) {
     return path === '/' ? pathname === '/' : pathname.startsWith(path)

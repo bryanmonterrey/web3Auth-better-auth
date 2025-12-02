@@ -17,6 +17,8 @@ interface ExportKeyModalProps {
     onClose: () => void;
 }
 
+import { useExportKey } from "@/hooks/use-wallet-sensitive";
+
 export default function ExportKeyModal({ isOpen, onClose }: ExportKeyModalProps) {
     const [step, setStep] = useState<"warning" | "verifying" | "loading" | "display">("warning");
     const [privateKey, setPrivateKey] = useState<string | null>(null);
@@ -24,6 +26,8 @@ export default function ExportKeyModal({ isOpen, onClose }: ExportKeyModalProps)
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
     const [copied, setCopied] = useState(false);
+
+    const exportKey = useExportKey();
 
     const handleVerifyPasskey = async () => {
         try {
@@ -62,17 +66,8 @@ export default function ExportKeyModal({ isOpen, onClose }: ExportKeyModalProps)
         try {
             setStep("loading");
 
-            const response = await fetch("/api/wallet/export-key", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-            });
+            const data = await exportKey.mutateAsync();
 
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.error || "Failed to export private key");
-            }
-
-            const data = await response.json();
             setPrivateKey(data.privateKey);
             setAddress(data.address);
             setStep("display");

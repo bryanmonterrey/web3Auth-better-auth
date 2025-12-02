@@ -18,11 +18,15 @@ interface RevealPhraseModalProps {
     onClose: () => void;
 }
 
+import { useRevealPhrase } from "@/hooks/use-wallet-sensitive";
+
 export default function RevealPhraseModal({ isOpen, onClose }: RevealPhraseModalProps) {
     const [step, setStep] = useState<"warning" | "verifying" | "loading" | "display">("warning");
     const [mnemonic, setMnemonic] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
+
+    const revealPhrase = useRevealPhrase();
 
     const handleVerifyPasskey = async () => {
         try {
@@ -61,17 +65,8 @@ export default function RevealPhraseModal({ isOpen, onClose }: RevealPhraseModal
         try {
             setStep("loading");
 
-            const response = await fetch("/api/wallet/reveal-phrase", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-            });
+            const data = await revealPhrase.mutateAsync();
 
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.error || "Failed to retrieve recovery phrase");
-            }
-
-            const data = await response.json();
             setMnemonic(data.mnemonic);
             setStep("display");
         } catch (err) {

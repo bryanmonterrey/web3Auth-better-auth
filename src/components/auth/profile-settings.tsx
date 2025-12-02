@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { authClient } from "@/lib/auth/client";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -8,22 +8,20 @@ import { Loader2, User } from "lucide-react";
 import AvatarUpload from "@/components/file-upload/avatar-upload";
 import type { FileWithPreview } from "@/hooks/use-file-upload";
 import { AnimatePresence, motion } from "framer-motion";
+import { useUpdateProfile } from "@/hooks/use-update-profile";
+import { useAuthSession } from "@/hooks/use-auth-session";
 
 export default function ProfileSettings() {
-    const { data: session } = authClient.useSession();
+    const { data: session } = useAuthSession();
     const [isLoading, setIsLoading] = useState(true);
-    const [saving, setSaving] = useState(false);
     const [username, setUsername] = useState("");
     const [displayName, setDisplayName] = useState("");
     const [bio, setBio] = useState("");
     const [avatarFile, setAvatarFile] = useState<File | null>(null);
-    const [error, setError] = useState("");
-    const [success, setSuccess] = useState("");
 
     const [resetCount, setResetCount] = useState(0);
 
-    // Track the last saved state to prevent toast from showing immediately after save
-    const savedDataRef = useRef<{ username: string; displayName: string; bio: string } | null>(null);
+    const updateProfile = useUpdateProfile();
 
     useEffect(() => {
         if (session?.user) {
@@ -32,9 +30,6 @@ export default function ProfileSettings() {
             setBio(session.user.bio || "");
             // Bio would come from session if it exists in the user object
             setIsLoading(false);
-
-            // Clear saved data ref when session updates
-            savedDataRef.current = null;
         }
     }, [session]);
 
@@ -46,93 +41,38 @@ export default function ProfileSettings() {
         }
     };
 
-    const handleSubmit = async () => {
-        setError("");
-        setSuccess("");
-        setSaving(true);
+    const handleSubmit = () => {
+        const updates: any = {};
 
-        try {
-            const formData = new FormData();
-
-            if (username !== session?.user?.username) {
-                formData.append("username", username);
-            }
-
-            if (displayName !== session?.user?.name) {
-                formData.append("displayName", displayName);
-            }
-
-            if (bio !== (session?.user?.bio || "")) {
-                formData.append("bio", bio);
-            }
-
-            if (avatarFile) {
-                formData.append("avatar", avatarFile);
-            }
-
-            const response = await fetch("/api/update-profile", {
-                method: "POST",
-                body: formData,
-            });
-
-            if (!response.ok) {
-                const data = await response.json();
-                throw new Error(data.error || "Failed to update profile");
-            }
-
-            // Force session refresh - getSession with query forces a network request
-            const { data: freshSession } = await authClient.getSession({
-                fetchOptions: {
-                    cache: 'no-store'
-                }
-            });
-
-            // Update local state with the fresh session data
-            // This ensures hasChanges becomes false immediately
-            if (freshSession?.user) {
-                const newUsername = freshSession.user.username || "";
-                const newDisplayName = freshSession.user.name || "";
-                const newBio = freshSession.user.bio || "";
-
-                setUsername(newUsername);
-                setDisplayName(newDisplayName);
-                setBio(newBio);
-
-                // Store what we just saved
-                savedDataRef.current = {
-                    username: newUsername,
-                    displayName: newDisplayName,
-                    bio: newBio
-                };
-            }
-
-            setSuccess("Profile updated successfully!");
-            setAvatarFile(null);
-            setResetCount(prev => prev + 1); // Reset avatar component
-
-            setTimeout(() => setSuccess(""), 3000);
-        } catch (err) {
-            setError(err instanceof Error ? err.message : "Failed to update profile");
-        } finally {
-            setSaving(false);
+        if (username !== session?.user?.username) {
+            updates.username = username;
         }
+
+        if (displayName !== session?.user?.name) {
+            updates.displayName = displayName;
+        }
+
+        if (bio !== (session?.user?.bio || "")) {
+            updates.bio = bio;
+        }
+
+        if (avatarFile) {
+            updates.avatar = avatarFile;
+        }
+
+        updateProfile.mutate(updates, {
+            onSuccess: (data) => {
+                setAvatarFile(null);
+                setResetCount(prev => prev + 1); // Reset avatar component
+            },
+        });
     };
 
-    const hasChanges = (() => {
-        // If we just saved, compare against saved data instead of session
-        if (savedDataRef.current) {
-            return username !== savedDataRef.current.username ||
-                displayName !== savedDataRef.current.displayName ||
-                bio !== savedDataRef.current.bio ||
-                avatarFile !== null;
-        }
-
-        // Otherwise compare against session
-        return username !== (session?.user?.username || "") ||
-            displayName !== (session?.user?.name || "") ||
-            bio !== (session?.user?.bio || "") ||
-            avatarFile !== null;
-    })();
+    const hasChanges =
+        username !== (session?.user?.username || "") ||
+        displayName !== (session?.user?.name || "") ||
+        bio !== (session?.user?.bio || "") ||
+        avatarFile !== null;
 
     const handleReset = () => {
         if (session?.user) {
@@ -140,7 +80,6 @@ export default function ProfileSettings() {
             setDisplayName(session.user.name || "");
             setBio(session.user.bio || "");
             setAvatarFile(null);
-            setError("");
             setResetCount(prev => prev + 1); // Reset avatar component
         }
     };
@@ -212,10 +151,7 @@ export default function ProfileSettings() {
                     <input
                         type="text"
                         value={username}
-                        onChange={(e) => {
-                            setUsername(e.target.value);
-                            setError("");
-                        }}
+                        onChange={(e) => setUsername(e.target.value)}
                         placeholder="Enter username"
                         className="w-full px-4 py-3 bg-neutral-900/50 border border-neutral-800 rounded-full text-white placeholder:text-neutral-500 focus:outline-none"
                     />
@@ -227,10 +163,7 @@ export default function ProfileSettings() {
                     <input
                         type="text"
                         value={displayName}
-                        onChange={(e) => {
-                            setDisplayName(e.target.value);
-                            setError("");
-                        }}
+                        onChange={(e) => setDisplayName(e.target.value)}
                         placeholder="Enter display name"
                         className="w-full px-4 py-3 bg-neutral-900/50 border border-neutral-800 rounded-full text-white placeholder:text-neutral-500 focus:outline-none"
                     />
@@ -241,10 +174,7 @@ export default function ProfileSettings() {
                     <label className="text-sm text-neutral-400 mb-2 block">Bio</label>
                     <textarea
                         value={bio}
-                        onChange={(e) => {
-                            setBio(e.target.value);
-                            setError("");
-                        }}
+                        onChange={(e) => setBio(e.target.value)}
                         placeholder="Tell us about yourself"
                         rows={4}
                         className="w-full px-4 py-3 bg-neutral-900/50 border border-neutral-800 rounded-3xl text-white placeholder:text-neutral-500 focus:outline-none resize-none"
@@ -273,10 +203,10 @@ export default function ProfileSettings() {
                             </Button>
                             <Button
                                 onClick={handleSubmit}
-                                disabled={saving}
+                                disabled={updateProfile.isPending}
                                 className="bg-emerald-500 hover:bg-emerald-400 text-black font-medium px-6 rounded-full transition-all"
                             >
-                                {saving ? (
+                                {updateProfile.isPending ? (
                                     <>
                                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                                         Saving...

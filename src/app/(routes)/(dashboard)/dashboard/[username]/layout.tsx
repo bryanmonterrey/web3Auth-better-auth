@@ -3,6 +3,7 @@
 import React, { useEffect } from "react";
 import { useParams } from "next/navigation";
 import { authClient } from "@/lib/auth/client";
+import { useAuthSession } from "@/hooks/use-auth-session";
 import { useTransitionRouter } from 'next-view-transitions'
 import { DashboardHeader } from "@/components/dashboard-ui/dashboard-header";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -11,7 +12,7 @@ import { AppContainer } from "@/components/app-ui/app-container";
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
     const params = useParams();
     const router = useTransitionRouter();
-    const { data: session, isPending } = authClient.useSession();
+    const { data: session, isLoading: isPending } = useAuthSession();
     const usernameFromUrl = params.username as string;
 
     // 🔒 CRITICAL SECURITY CHECK: Validate user can only access their own dashboard
@@ -83,11 +84,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     }
     return (
         <>
-        <div className="h-screen scroll-smooth hidden-scrollbar">
-            <DashboardHeader />
-            <AppContainer>
-                {children}
-            </AppContainer>
+            <div className="h-screen scroll-smooth hidden-scrollbar">
+                <DashboardHeader />
+                <AppContainer>
+                    {children}
+                </AppContainer>
             </div>
         </>
     );

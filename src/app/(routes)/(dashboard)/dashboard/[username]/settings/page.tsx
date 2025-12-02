@@ -2,18 +2,20 @@
 
 import { useState, useEffect } from "react";
 import { authClient } from "@/lib/auth/client";
+import { useAuthSession } from "@/hooks/use-auth-session";
 import { Skeleton } from "@/components/ui/skeleton";
 import PasskeyManager from "@/components/auth/passkey-manager";
 import AccountLinking from "@/components/auth/account-linking";
 import SessionManager from "@/components/auth/session-manager";
 import SecurityAuditLog from "@/components/auth/security-audit-log";
 import WalletManagement from "@/components/auth/wallet-management";
+import { useLinkedAccounts } from "@/hooks/use-linked-accounts";
 import { AnimatedTabs } from "@/components/ui/animated-tabs";
 
 export default function SettingsPage() {
-    const { data: session } = authClient.useSession();
-    const [linkedAccounts, setLinkedAccounts] = useState<any[]>([]);
-    const [loadingAccounts, setLoadingAccounts] = useState(true);
+    const { data: session } = useAuthSession();
+    const { data: accountsData, isLoading: loadingAccounts } = useLinkedAccounts();
+    const linkedAccounts = accountsData?.accounts || [];
 
     // Determine if user is wallet-only (has wallet but no social accounts)
     const isWalletOnlyUser = session?.user?.wallet_address && linkedAccounts.length === 0 && !loadingAccounts;
@@ -21,25 +23,6 @@ export default function SettingsPage() {
     // Wallet-only users see only Sessions tab, others see all tabs
     const tabs = isWalletOnlyUser ? ["Sessions"] : ["Wallet", "Security", "Passkeys", "Accounts", "Sessions"];
     const [activeTab, setActiveTab] = useState(tabs[0]);
-
-    // Load linked accounts to determine user type
-    useEffect(() => {
-        const loadLinkedAccounts = async () => {
-            try {
-                const response = await fetch("/api/accounts");
-                if (response.ok) {
-                    const data = await response.json();
-                    setLinkedAccounts(data.accounts || []);
-                }
-            } catch (error) {
-                console.error("Failed to load accounts:", error);
-            } finally {
-                setLoadingAccounts(false);
-            }
-        };
-
-        loadLinkedAccounts();
-    }, []);
 
     // Update active tab when user type changes
     useEffect(() => {
@@ -58,40 +41,40 @@ export default function SettingsPage() {
                 </div>
 
                 {/* Animated Tabs */}
-            
-                    <div className="flex justify-center">
-                        <AnimatedTabs tabs={tabs} activeTab={activeTab} onTabChange={setActiveTab} />
-                    </div>
-                
+
+                <div className="flex justify-center">
+                    <AnimatedTabs tabs={tabs} activeTab={activeTab} onTabChange={setActiveTab} />
+                </div>
+
 
                 {/* Content Container - Fixed Width */}
                 <div className="w-full">
-                        <>
-                            {/* Wallet Section */}
-                            {activeTab.toLowerCase() === "wallet" && (
-                                <WalletManagement />
-                            )}
+                    <>
+                        {/* Wallet Section */}
+                        {activeTab.toLowerCase() === "wallet" && (
+                            <WalletManagement />
+                        )}
 
-                            {/* Security Section */}
-                            {activeTab.toLowerCase() === "security" && (
-                                <SecurityAuditLog />
-                            )}
+                        {/* Security Section */}
+                        {activeTab.toLowerCase() === "security" && (
+                            <SecurityAuditLog />
+                        )}
 
-                            {/* Passkeys Section */}
-                            {activeTab.toLowerCase() === "passkeys" && (
-                                <PasskeyManager />
-                            )}
+                        {/* Passkeys Section */}
+                        {activeTab.toLowerCase() === "passkeys" && (
+                            <PasskeyManager />
+                        )}
 
-                            {/* Accounts Section */}
-                            {activeTab.toLowerCase() === "accounts" && (
-                                <AccountLinking />
-                            )}
+                        {/* Accounts Section */}
+                        {activeTab.toLowerCase() === "accounts" && (
+                            <AccountLinking />
+                        )}
 
-                            {/* Sessions Section */}
-                            {activeTab.toLowerCase() === "sessions" && (
-                                <SessionManager />
-                            )}
-                        </>     
+                        {/* Sessions Section */}
+                        {activeTab.toLowerCase() === "sessions" && (
+                            <SessionManager />
+                        )}
+                    </>
                 </div>
             </div>
         </div>

@@ -4,12 +4,13 @@ import React, { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { useTransitionRouter } from 'next-view-transitions'
 import { authClient } from "@/lib/auth/client";
+import { useAuthSession } from "@/hooks/use-auth-session";
 import { AppHeader } from "@/components/app-ui/app-header";
 import { AppContainer } from "@/components/app-ui/app-container";
 
 
 export default function BrowseLayoutClient({ children }: { children: React.ReactNode }) {
-    const { data: sessionData, isPending: isLoading } = authClient.useSession();
+    const { data: sessionData, isLoading } = useAuthSession();
     const router = useTransitionRouter();
     const pathname = usePathname();
     const [redirectTimer, setRedirectTimer] = useState<NodeJS.Timeout | null>(null);

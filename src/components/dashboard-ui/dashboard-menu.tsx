@@ -5,7 +5,7 @@ import { useTransitionRouter } from 'next-view-transitions';
 import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { cn } from "@/lib/utils";
-import { authClient } from "@/lib/auth/client";
+import { useAuthSession } from "@/hooks/use-auth-session";
 import { User, Video, MessageCircle, Library, Users, CreditCard, Settings, Menu } from 'lucide-react';
 import {
     Drawer,
@@ -19,7 +19,7 @@ export const DashboardMenu = () => {
     const pathname = usePathname();
     const router = useTransitionRouter();
     const [open, setOpen] = useState(false);
-    const { data: session, isPending: loading } = authClient.useSession();
+    const { data: session, isLoading: loading } = useAuthSession();
     const username = session?.user?.username || "";
 
     if (loading) {

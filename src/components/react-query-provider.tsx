@@ -2,6 +2,8 @@
 'use client'
 
 import { isServer, QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { trpc, trpcClient } from '@/lib/trpc/client'
+import { useState } from 'react'
 
 function makeQueryClient() {
   return new QueryClient({
@@ -28,6 +30,11 @@ function getQueryClient() {
 
 export function ReactQueryProvider({ children }: { children: React.ReactNode }) {
   const queryClient = getQueryClient()
+  const [trpcClientInstance] = useState(() => trpcClient)
 
-  return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+  return (
+    <trpc.Provider client={trpcClientInstance} queryClient={queryClient}>
+      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    </trpc.Provider>
+  )
 }
