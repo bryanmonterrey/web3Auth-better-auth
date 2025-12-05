@@ -8,9 +8,7 @@ import {
   useWallet,
   WalletProvider,
 } from '@solana/wallet-adapter-react'
-import {
-  WalletConnectWalletAdapter,
-} from "@solana/wallet-adapter-wallets";
+import { WalletConnectWalletAdapter } from "@walletconnect/solana-adapter";
 import { WalletModalProvider } from '@solana/wallet-adapter-react-ui'
 import dynamic from 'next/dynamic'
 import { ReactNode, useCallback, useMemo, useState, useEffect } from 'react'

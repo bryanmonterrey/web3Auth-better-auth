@@ -32,6 +32,7 @@
     "@trpc/react-query": "^11.7.2",
     "@trpc/server": "^11.7.2",
     "@types/bip39": "^2.4.2",
+    "@walletconnect/solana-adapter": "^0.0.8",
     "better-auth": "^1.4.5",
     "better-auth-siws": "^0.1.0",
     "bip39": "^3.1.0",
