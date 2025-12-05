@@ -146,6 +146,7 @@ export default function WalletButton() {
         if (isSigningIn) return "Signing In...";
         if (isSigningOut.current || disconnecting) return "Signing Out...";
         if (isSignedIn && walletAddress) return shortenWalletAddress(walletAddress);
+        if (isSignedIn) return session?.user?.username || "Account";
         if (connected) return "Sign In";
         return "Connect Wallet";
     };
