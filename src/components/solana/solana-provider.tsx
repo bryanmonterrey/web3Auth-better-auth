@@ -55,20 +55,26 @@ export function SolanaProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  const wallets = useMemo(() => [
-    new WalletConnectWalletAdapter({
-      network,
-      options: {
-        projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || '8d7de790d4225d0bfd02ad68ad524d1f',
-        metadata: {
-          name: process.env.NEXT_PUBLIC_APP_NAME || 'nextJS-web3Auth',
-          description: 'Connect wallet',
-          url: mounted ? window.location.origin : (process.env.NEXT_PUBLIC_BASE_URL || 'https://anthrax.dev'),
-          icons: ['https://anthrax.dev/favicon.ico']
-        }
-      },
-    }),
-  ], [network, mounted]);
+  const wallets = useMemo(() => {
+    const currentOrigin = typeof window !== 'undefined' ? window.location.origin : (process.env.NEXT_PUBLIC_BASE_URL || 'https://anthrax.dev');
+
+    console.log("Creating WalletConnect adapter with origin:", currentOrigin);
+
+    return [
+      new WalletConnectWalletAdapter({
+        network,
+        options: {
+          projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || '8d7de790d4225d0bfd02ad68ad524d1f',
+          metadata: {
+            name: process.env.NEXT_PUBLIC_APP_NAME || 'nextJS-web3Auth',
+            description: 'Connect wallet',
+            url: currentOrigin,
+            icons: ['https://anthrax.dev/favicon.ico']
+          }
+        },
+      }),
+    ];
+  }, [network]);
 
   return (
     <ConnectionProvider endpoint={endpoint}>
