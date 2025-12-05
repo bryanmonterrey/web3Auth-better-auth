@@ -51,7 +51,7 @@ export function SolanaProvider({ children }: { children: ReactNode }) {
         metadata: {
           name: process.env.NEXT_PUBLIC_APP_NAME || 'nextJS-web3Auth',
           description: 'Connect wallet',
-          url: process.env.NEXT_PUBLIC_BASE_URL || 'https://watchparty.xyz',
+          url: typeof window !== 'undefined' ? window.location.origin : (process.env.NEXT_PUBLIC_BASE_URL || 'https://watchparty.xyz'),
           icons: ['https://watchparty.xyz/favicon.ico']
         }
       },
