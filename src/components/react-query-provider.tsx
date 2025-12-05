@@ -11,7 +11,6 @@ function makeQueryClient() {
       queries: {
         staleTime: 5 * 60 * 1000, // 5 minutes - data stays fresh longer
         refetchOnWindowFocus: false, // Don't refetch when window regains focus
-        refetchOnMount: false, // Don't refetch on component mount if data exists
       },
     },
   })
