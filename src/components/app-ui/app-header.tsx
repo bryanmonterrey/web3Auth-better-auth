@@ -51,7 +51,7 @@ export function AppHeader({ links = [] }: { links?: { label: string; path: strin
 
 
         <div className="flex items-center gap-2">
-          {session?.user?.username && (
+          {session?.user && session.user.username && (
             <Button variant="outline" asChild>
               <Link href={`/dashboard/${session.user.username}`}>
                 Dashboard
