@@ -6,7 +6,7 @@ import { passkeyClient } from "@better-auth/passkey/client";
 
 // Create auth client instance
 export const authClient = createAuthClient({
-  baseURL: process.env.NEXT_PUBLIC_AUTH_URL ?? "http://localhost:3001/api/auth",
+  baseURL: process.env.NEXT_PUBLIC_AUTH_URL ?? (typeof window !== "undefined" ? `${window.location.origin}/api/auth` : "http://localhost:3001/api/auth"),
   plugins: [
     siwsClientPlugin(),
     passkeyClient(),

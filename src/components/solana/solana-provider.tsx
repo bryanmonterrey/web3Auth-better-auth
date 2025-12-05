@@ -13,7 +13,7 @@ import {
 } from "@solana/wallet-adapter-wallets";
 import { WalletModalProvider } from '@solana/wallet-adapter-react-ui'
 import dynamic from 'next/dynamic'
-import { ReactNode, useCallback, useMemo } from 'react'
+import { ReactNode, useCallback, useMemo, useState, useEffect } from 'react'
 import { ClusterNetwork, useCluster } from '../cluster/cluster-data-access'
 import '@solana/wallet-adapter-react-ui/styles.css'
 import { AnchorProvider } from '@coral-xyz/anchor'
@@ -43,6 +43,12 @@ export function SolanaProvider({ children }: { children: ReactNode }) {
     console.error(error)
   }, [])
 
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const wallets = useMemo(() => [
     new WalletConnectWalletAdapter({
       network,
@@ -51,12 +57,12 @@ export function SolanaProvider({ children }: { children: ReactNode }) {
         metadata: {
           name: process.env.NEXT_PUBLIC_APP_NAME || 'nextJS-web3Auth',
           description: 'Connect wallet',
-          url: typeof window !== 'undefined' ? window.location.origin : (process.env.NEXT_PUBLIC_BASE_URL || 'https://watchparty.xyz'),
-          icons: ['https://watchparty.xyz/favicon.ico']
+          url: mounted ? window.location.origin : (process.env.NEXT_PUBLIC_BASE_URL || 'https://anthrax.dev'),
+          icons: ['https://anthrax.dev/favicon.ico']
         }
       },
     }),
-  ], [network]);
+  ], [network, mounted]);
 
   return (
     <ConnectionProvider endpoint={endpoint}>
