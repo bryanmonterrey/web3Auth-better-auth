@@ -7,6 +7,13 @@ const nextConfig: NextConfig = {
     "@solana/wallet-adapter-react-ui",
     "@solana/wallet-adapter-react",
     "@solana/wallet-adapter-wallets",
+    "@walletconnect/core",
+    "@walletconnect/utils",
+    "@walletconnect/common",
+    "@walletconnect/types",
+    "@walletconnect/sign-client",
+    "@walletconnect/logger",
+    "@walletconnect/jsonrpc-utils",
   ],
   serverExternalPackages: ["pino", "thread-stream"],
   webpack: (config) => {
