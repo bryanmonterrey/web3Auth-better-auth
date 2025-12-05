@@ -8,8 +8,9 @@ export function useAuthSession() {
             const { data } = await authClient.getSession();
             return data;
         },
-        staleTime: 5 * 60 * 1000, // 5 minutes
+        staleTime: 1 * 60 * 1000, // 1 minute - balance between freshness and performance
         refetchOnMount: true,
         refetchOnWindowFocus: false,
+        refetchInterval: 2000, // Poll every 2 seconds to catch auth state changes
     });
 }
