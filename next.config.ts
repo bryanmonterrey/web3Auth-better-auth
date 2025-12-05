@@ -3,7 +3,6 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   serverExternalPackages: ["pino", "thread-stream"],
   webpack: (config) => {
-    config.externals.push("pino-pretty", "lokijs", "encoding");
     config.resolve.fallback = {
       ...config.resolve.fallback,
       fs: false,
