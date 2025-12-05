@@ -47,6 +47,12 @@ export function SolanaProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     setMounted(true);
+    if (typeof window !== 'undefined') {
+      console.log("WalletConnect Config:", {
+        projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID,
+        metadataUrl: window.location.origin
+      });
+    }
   }, []);
 
   const wallets = useMemo(() => [
