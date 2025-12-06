@@ -11,6 +11,6 @@ export function useAuthSession() {
         staleTime: 1 * 60 * 1000, // 1 minute - balance between freshness and performance
         refetchOnMount: true,
         refetchOnWindowFocus: false,
-        refetchInterval: 2000, // Poll every 2 seconds to catch auth state changes
+        refetchInterval: 1000, // Poll every 2 seconds to catch auth state changes
     });
 }

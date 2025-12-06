@@ -122,6 +122,7 @@
   --color-offwhite: #FBFBFB;
   --color-card: #11111A;
   --color-matte: #171717;
+  --color-greyy: #1F1E1E;
 
   @keyframes accordion-down {
     from {

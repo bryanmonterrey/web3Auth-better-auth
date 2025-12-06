@@ -132,7 +132,7 @@ export default function ProfileSettings() {
             </div>
 
             {/* Avatar Section */}
-            <div className="bg-neutral-800/40 rounded-3xl p-6">
+            <div className="bg-greyy/25 rounded-3xl p-6">
                 <h3 className="font-medium text-white mb-4">Avatar</h3>
                 <AvatarUpload
                     key={resetCount} // Only re-render when explicitly reset
