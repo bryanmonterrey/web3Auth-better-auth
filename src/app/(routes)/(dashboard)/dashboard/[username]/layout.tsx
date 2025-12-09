@@ -45,12 +45,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 <div className="transition-all hidden-scrollbar flex h-[calc(100vh-52px)] items-center justify-start p-6">
                     <div className="w-full max-w-sm mx-auto space-y-8 flex flex-col items-center">
                         <div className="space-y-2 text-center">
-                            <Skeleton className="h-9 w-48 mx-auto" />
-                            <Skeleton className="h-5 w-64 mx-auto" />
+                            <Skeleton className="h-9 w-48 mx-auto rounded-full" />
+                            <Skeleton className="h-5 w-64 mx-auto rounded-full" />
                         </div>
-                        <Skeleton className="h-10 w-full max-w-md" />
+                        <Skeleton className="h-10 w-full max-w-md rounded-full" />
                         <div className="w-full space-y-4">
-                            <Skeleton className="h-8 w-48" />
+                            <Skeleton className="h-8 w-48 rounded-full" />
                             <Skeleton className="h-32 w-full rounded-3xl" />
                             <Skeleton className="h-32 w-full rounded-3xl" />
                         </div>
