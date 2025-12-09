@@ -30,10 +30,10 @@ export default function WalletManagement({ isLoading = false }: WalletManagement
             <div className="space-y-4">
                 <Skeleton className="h-7 w-48 mb-4 rounded-full" />
                 <div className="space-y-4">
-                    <Skeleton className="h-20 w-full bg-neutral-800/40 rounded-3xl" />
-                    <Skeleton className="h-20 w-full bg-neutral-800/40 rounded-3xl" />
+                    <Skeleton className="h-20 w-full bg-greyy/25 rounded-3xl" />
+                    <Skeleton className="h-20 w-full bg-greyy/25 rounded-3xl" />
                 </div>
-                <Skeleton className="h-40 w-full bg-neutral-800/40 rounded-3xl mt-6" />
+                <Skeleton className="h-40 w-full bg-greyy/25 rounded-3xl mt-6" />
             </div>
         );
     }
@@ -45,9 +45,9 @@ export default function WalletManagement({ isLoading = false }: WalletManagement
 
                 {/* Recovery Phrase */}
                 <div className="space-y-4">
-                    <div className="flex items-center justify-between p-4 bg-neutral-800/40 rounded-3xl border border-neutral-800/10 transition-colors">
+                    <div className="flex items-center justify-between p-4 bg-greyy/25 rounded-3xl border border-neutral-800/10 transition-colors">
                         <div className="flex items-center gap-3">
-                            <div className="p-2 bg-neutral-800/40 rounded-lg">
+                            <div className="p-2 bg-greyy/25 rounded-lg">
                                 <Eye className="w-5 h-5 text-neutral-400" />
                             </div>
                             <div>
@@ -66,9 +66,9 @@ export default function WalletManagement({ isLoading = false }: WalletManagement
                     </div>
 
                     {/* Export Private Key */}
-                    <div className="flex items-center justify-between p-4 bg-neutral-800/40 rounded-3xl  transition-colors">
+                    <div className="flex items-center justify-between p-4 bg-greyy/25 rounded-3xl  transition-colors">
                         <div className="flex items-center gap-3">
-                            <div className="p-2 bg-neutral-800/40 rounded-lg">
+                            <div className="p-2 bg-greyy/25 rounded-lg">
                                 <Download className="w-5 h-5 text-neutral-400" />
                             </div>
                             <div>

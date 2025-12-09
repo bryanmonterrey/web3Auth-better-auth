@@ -64,7 +64,7 @@ export default function SecurityAuditLog() {
                 {/* Stats Skeleton */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
                     {[1, 2, 3].map((i) => (
-                        <div key={i} className="bg-neutral-800/40 rounded-3xl p-4">
+                        <div key={i} className="bg-greyy/25 rounded-3xl p-4">
                             <Skeleton className="h-4 w-20 mb-2 rounded-full" />
                             <Skeleton className="h-5 w-16 rounded-full" />
                         </div>
@@ -74,7 +74,7 @@ export default function SecurityAuditLog() {
                 {/* Card List Skeleton */}
                 <div className="w-full space-y-2">
                     {[1, 2, 3, 4, 5].map((i) => (
-                        <div key={i} className="bg-neutral-800/40 rounded-3xl p-4 flex items-center justify-between">
+                        <div key={i} className="bg-greyy/25 rounded-3xl p-4 flex items-center justify-between">
                             <div className="flex items-center gap-3 flex-1">
                                 <Skeleton className="w-10 h-10 rounded-lg" />
                                 <div className="space-y-2 flex-1">
@@ -102,17 +102,17 @@ export default function SecurityAuditLog() {
 
             {/* Stats */}
             <div className="grid grid-cols-3 gap-3 w-full">
-                <div className="bg-neutral-800/40  col-span-1 rounded-3xl p-4">
+                <div className="bg-greyy/25  col-span-1 rounded-3xl p-4">
                     <p className="text-neutral-400 text-sm">Events</p>
                     <p className="text-2xl font-bold text-white mt-1">{logs.length}</p>
                 </div>
-                <div className="bg-neutral-800/40 col-span-1 rounded-3xl p-4">
+                <div className="bg-greyy/25 col-span-1 rounded-3xl p-4">
                     <p className="text-neutral-400 text-sm">Reveals</p>
                     <p className="text-2xl font-bold text-white mt-1">
                         {logs.filter((l) => l.action === "reveal_phrase").length}
                     </p>
                 </div>
-                <div className="bg-neutral-800/40 col-span-1 rounded-3xl p-4">
+                <div className="bg-greyy/25 col-span-1 rounded-3xl p-4">
                     <p className="text-neutral-400 text-sm">Exports</p>
                     <p className="text-2xl font-bold text-white mt-1">
                         {logs.filter((l) => l.action === "export_key").length}
@@ -123,7 +123,7 @@ export default function SecurityAuditLog() {
             {/* Audit Log Cards */}
             <div className="w-full space-y-2">
                 {logs.length === 0 ? (
-                    <div className="bg-neutral-800/40 rounded-3xl p-8 text-center">
+                    <div className="bg-greyy/25 rounded-3xl p-8 text-center">
                         <Shield className="w-12 h-12 text-neutral-600 mx-auto mb-4" />
                         <h3 className="text-lg font-medium mb-2">No Security Events</h3>
                         <p className="text-neutral-400 text-sm">
@@ -137,7 +137,7 @@ export default function SecurityAuditLog() {
                         return (
                             <div
                                 key={log.id}
-                                className="bg-neutral-800/40 rounded-3xl p-4 flex items-center justify-between transition-colors hover:bg-neutral-800/60"
+                                className="bg-greyy/25 rounded-3xl p-4 flex items-center justify-between transition-colors hover:bg-neutral-800/60"
                             >
                                 <div className="flex items-center gap-3">
                                     <div className="w-10 h-10 bg-blue-500/10 rounded-lg flex items-center justify-center">

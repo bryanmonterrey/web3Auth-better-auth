@@ -91,7 +91,7 @@ export default function ProfileSettings() {
                 <Skeleton className="h-7 w-48 rounded-full" />
 
                 {/* Avatar Section Skeleton */}
-                <div className="bg-neutral-800/40 rounded-3xl p-6 space-y-4">
+                <div className="bg-greyy/25 rounded-3xl p-6 space-y-4">
                     <Skeleton className="h-6 w-20 rounded-full" />
                     <div className="flex flex-col items-center gap-4">
                         <Skeleton className="h-24 w-24 rounded-full" />
@@ -103,7 +103,7 @@ export default function ProfileSettings() {
                 </div>
 
                 {/* Profile Information Skeleton */}
-                <div className="bg-neutral-800/40 rounded-3xl p-6 space-y-4">
+                <div className="bg-greyy/25 rounded-3xl p-6 space-y-4">
                     <Skeleton className="h-6 w-40 rounded-full" />
                     <div className="space-y-4">
                         <div>
@@ -142,7 +142,7 @@ export default function ProfileSettings() {
             </div>
 
             {/* Profile Information */}
-            <div className="bg-neutral-800/40 rounded-3xl p-6 space-y-4">
+            <div className="bg-greyy/25 rounded-3xl p-6 space-y-4">
                 <h3 className="font-medium text-white mb-2">Profile Information</h3>
 
                 {/* Username */}

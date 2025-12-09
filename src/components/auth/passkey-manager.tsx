@@ -99,7 +99,7 @@ export default function PasskeyManager() {
             {isLoading ? (
                 <div className="space-y-2">
                     {[1, 2, 3].map((i) => (
-                        <div key={i} className="bg-neutral-800/40 rounded-3xl p-4">
+                        <div key={i} className="bg-greyy/25 rounded-3xl p-4">
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center  gap-3 flex-1">
                                     <Skeleton className="w-10 h-10 rounded-2xl" />
@@ -117,7 +117,7 @@ export default function PasskeyManager() {
                     ))}
                 </div>
             ) : passkeys.length === 0 ? (
-                <div className="bg-neutral-800/40 rounded-4xl p-8 text-center">
+                <div className="bg-greyy/25 rounded-4xl p-8 text-center">
                     <Smartphone className="w-12 h-12 text-neutral-600 mx-auto mb-4" />
                     <h3 className="text-lg font-medium mb-2">No Passkeys Yet</h3>
                     <p className="text-neutral-400 text-sm mb-4">
@@ -137,7 +137,7 @@ export default function PasskeyManager() {
                     {passkeys.map((passkey) => (
                         <div
                             key={passkey.id}
-                            className="bg-neutral-800/40 rounded-3xl p-4 flex items-center justify-between transition-colors"
+                            className="bg-greyy/25 rounded-3xl p-4 flex items-center justify-between transition-colors"
                         >
                             <div className="flex items-center gap-3">
                                 <div className="w-10 h-10 bg-neutral-800/20 rounded-lg flex items-center justify-center">

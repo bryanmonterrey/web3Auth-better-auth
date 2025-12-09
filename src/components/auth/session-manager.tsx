@@ -129,7 +129,7 @@ export default function SessionManager() {
             {isLoading ? (
                 <div className="space-y-2">
                     {[1, 2, 3].map((i) => (
-                        <div key={i} className="bg-neutral-800/40 rounded-3xl p-4">
+                        <div key={i} className="bg-greyy/25 rounded-3xl p-4">
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center gap-3 flex-1">
                                     <Skeleton className="h-10 w-10 rounded-full" />
@@ -144,7 +144,7 @@ export default function SessionManager() {
                     ))}
                 </div>
             ) : sessions.length === 0 ? (
-                <div className="bg-neutral-800/40 rounded-3xl p-8 text-center">
+                <div className="bg-greyy/25 rounded-3xl p-8 text-center">
                     <Shield className="w-12 h-12 mx-auto mb-4 text-neutral-500" />
                     <p className="text-neutral-400">No active sessions</p>
                 </div>
@@ -157,14 +157,14 @@ export default function SessionManager() {
                         return (
                             <div
                                 key={session.id}
-                                className={`bg-neutral-800/40 rounded-3xl p-4 border ${isCurrentSession
-                                        ? "border-blue-500/30 bg-blue-500/5"
-                                        : "border-neutral-800/10"
+                                className={`bg-greyy/25 rounded-3xl p-4 border ${isCurrentSession
+                                    ? "border-blue-500/30 bg-blue-500/5"
+                                    : "border-neutral-800/10"
                                     }`}
                             >
                                 <div className="flex items-center justify-between">
                                     <div className="flex items-center gap-3 flex-1">
-                                        <div className="p-2 bg-neutral-800/40 rounded-lg">
+                                        <div className="p-2 bg-greyy/25 rounded-lg">
                                             <DeviceIcon className="w-5 h-5 text-neutral-400" />
                                         </div>
                                         <div className="flex-1">

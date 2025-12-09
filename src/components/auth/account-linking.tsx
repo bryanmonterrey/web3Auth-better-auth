@@ -128,7 +128,7 @@ export default function AccountLinking() {
 
             {/* Wallet Address */}
             {isLoading ? (
-                <div className="bg-neutral-800/40 rounded-3xl p-4">
+                <div className="bg-greyy/25 rounded-3xl p-4">
                     <div className="flex items-start justify-between">
                         <div className="flex gap-4 flex-1">
                             <Skeleton className="w-12 h-12 rounded-2xl" />
@@ -140,7 +140,7 @@ export default function AccountLinking() {
                     </div>
                 </div>
             ) : session?.user?.wallet_address && (
-                <div className="bg-neutral-800/40 rounded-3xl p-4">
+                <div className="bg-greyy/25 rounded-3xl p-4">
                     <div className="flex items-start justify-between">
                         <div className="flex gap-4 flex-1">
                             <div className="p-3 bg-neutral-900/50 rounded-2xl">
@@ -169,7 +169,7 @@ export default function AccountLinking() {
             {isLoading ? (
                 <div className="space-y-3">
                     {[1, 2, 3, 4].map((i) => (
-                        <div key={i} className="bg-neutral-800/40 rounded-3xl p-4">
+                        <div key={i} className="bg-greyy/25 rounded-3xl p-4">
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center gap-3 flex-1">
                                     <Skeleton className="w-10 h-10 rounded-full" />
@@ -189,7 +189,7 @@ export default function AccountLinking() {
                         return (
                             <div
                                 key={provider.id}
-                                className={`bg-neutral-800/40 rounded-3xl p-4 ${linked ? "" : ""
+                                className={`bg-greyy/25 rounded-3xl p-4 ${linked ? "" : ""
                                     }`}
                             >
                                 <div className="flex items-start justify-between">
