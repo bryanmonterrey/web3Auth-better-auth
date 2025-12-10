@@ -14,6 +14,7 @@ export function useLinkAccount() {
             await authClient.linkSocial({
                 provider: provider as any,
                 callbackURL: window.location.href,
+                errorCallbackURL: window.location.href, // Redirect back to this page on error
             });
         },
         isPending: false,
