@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { Link as LinkIcon, Unlink, Shield, AlertTriangle, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -78,6 +79,17 @@ export default function AccountLinking() {
     const linkAccount = useLinkAccount();
     const unlinkAccount = useUnlinkAccount();
     const { data: session } = useAuthSession();
+    const searchParams = useSearchParams();
+
+    useEffect(() => {
+        const error = searchParams.get("error");
+        if (error) {
+            toast.error(`Failed to link account: ${error}`);
+            // Optional: Clean up the URL
+            const newUrl = window.location.pathname;
+            window.history.replaceState({}, "", newUrl);
+        }
+    }, [searchParams]);
 
     const linkedAccounts = data?.accounts || [];
     const [showUnlinkDialog, setShowUnlinkDialog] = useState<string | null>(null);

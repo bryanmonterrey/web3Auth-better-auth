@@ -59,6 +59,12 @@ export const auth = betterAuth({
     generateId: () => crypto.randomUUID(),
   },
 
+  account: {
+    accountLinking: {
+      allowDifferentEmails: true,
+    },
+  },
+
   // 🔐 Social Providers (Google, Twitter, Discord)
   socialProviders: {
     google: {
