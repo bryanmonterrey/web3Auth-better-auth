@@ -22,7 +22,7 @@ export function DashboardHeader() {
   const [showMenu, setShowMenu] = useState(false)
 
   return (
-    <header className="w-full absolute bg-transparent top-0 fixed z-50 px-4 py-2 dark:text-neutral-400">
+    <header className="w-full absolute bg-transparent top-0 fixed z-50 px-3 py-2 dark:text-neutral-400">
       <div className="mx-auto flex justify-between items-center">
         <div className="flex items-center gap-4">
           <Link className="" href="/">
