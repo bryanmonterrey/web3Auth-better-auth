@@ -10,6 +10,6 @@ export function useAuthSession() {
         },
         staleTime: 5 * 60 * 1000, // 5 minutes
         refetchOnMount: true,
-        refetchOnWindowFocus: false,
+        refetchOnWindowFocus: true, // Refetch when window regains focus (e.g. after passkey dialog)
     });
 }

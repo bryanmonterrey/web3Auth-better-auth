@@ -4,7 +4,6 @@
 import { isServer, QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { trpc, trpcClient } from '@/lib/trpc/client'
 import { useState } from 'react'
-import { SessionSync } from './session-sync'
 
 function makeQueryClient() {
   return new QueryClient({
@@ -34,10 +33,7 @@ export function ReactQueryProvider({ children }: { children: React.ReactNode }) 
 
   return (
     <trpc.Provider client={trpcClientInstance} queryClient={queryClient}>
-      <QueryClientProvider client={queryClient}>
-        <SessionSync />
-        {children}
-      </QueryClientProvider>
+      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
     </trpc.Provider>
   )
 }
