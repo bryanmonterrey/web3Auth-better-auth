@@ -15,11 +15,14 @@ export default function BrowseLayoutClient({
     children: React.ReactNode;
     initialSession: any;
 }) {
-    // Hydrate session data immediately
+    // Hydrate session data immediately and keep it in sync with server
     const queryClient = useQueryClient();
-    if (initialSession && !queryClient.getQueryData(["session"])) {
+
+    useEffect(() => {
+        // Always sync the server session to the client cache
+        // This ensures that if the server says we're signed out (null), the client updates
         queryClient.setQueryData(["session"], initialSession);
-    }
+    }, [initialSession, queryClient]);
 
     const { data: sessionData, isLoading } = useAuthSession();
     const router = useTransitionRouter();
