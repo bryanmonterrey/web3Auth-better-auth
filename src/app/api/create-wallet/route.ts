@@ -133,8 +133,6 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    console.log(`🔐 Creating wallet for user: ${userId.slice(0, 8)}...`);
-
     // Generate encryption key source from social login
     const encryptionKeySource = `social - ${userId} `;
 

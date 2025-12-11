@@ -56,8 +56,6 @@ export function SolanaProvider({ children }: { children: ReactNode }) {
   const wallets = useMemo(() => {
     const currentOrigin = typeof window !== 'undefined' ? window.location.origin : (process.env.NEXT_PUBLIC_BASE_URL || 'https://anthrax.dev');
 
-    console.log("Creating WalletConnect adapter with origin:", currentOrigin);
-
     return [
       new WalletConnectWalletAdapter({
         network,
